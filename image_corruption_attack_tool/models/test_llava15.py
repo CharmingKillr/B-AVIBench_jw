@@ -121,7 +121,7 @@ def load_model(model_path, model_name, dtype=torch.float16, device='cpu'):
 
 class TestLLaVA15:
     def __init__(self, device=None):
-        model_path="liuhaotian/llava-v1.5-7b"
+        model_path="/data/jw/huggingfacemodel/llava-v1.5-7b"
         # model_name = get_model_name(model_path)
         model_name = get_model_name_from_path(model_path)
         # print(model_name)
@@ -173,8 +173,14 @@ class TestLLaVA15:
         for image, question in zip(image_list, question_list):
             # print("jfk",image)
             if method is not None and level!=0:
+                if level == 1:
+                    DATA_PATA = '/data/jw/projects/B-AVIBench_jw/eval-data/corruption/lvlm_tiny_corruption_1'
+                elif level == 3:
+                    DATA_PATA = '/data/jw/projects/B-AVIBench_jw/eval-data/corruption/lvlm_tiny_corruption_3'
+                elif level == 5:
+                    DATA_PATA = '/data/jw/projects/B-AVIBench_jw/eval-data/corruption/lvlm_tiny_corruption_5'
                 tmp=image.split('/')
-                image=os.path.join('/nvme/share/zhanghao/tiny_lvlm_new',tmp[-2]+'_{}_{}'.format(method,level),tmp[-1])#,tmp[-1]
+                image=os.path.join(DATA_PATA,tmp[-2]+'_{}_{}'.format(method,level),tmp[-1])
             # print("jkf",image,"22")
             image = get_image(image)
             conv = self.conv.copy()

@@ -34,7 +34,7 @@ class TestVPGTrans:
             self.move_to_device(device)
 
     def move_to_device(self, device):
-        if device is not None and 'cuda' in device.type:
+        if device is not None :
             self.dtype = torch.float16
             self.device = device
         else:

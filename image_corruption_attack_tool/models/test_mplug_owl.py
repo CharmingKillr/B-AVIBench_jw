@@ -37,7 +37,7 @@ class TestMplugOwl:
             self.move_to_device(device)
         
     def move_to_device(self, device=None):
-        if device is not None and 'cuda' in device.type:
+        if device is not None:
             self.device = device
             if torch.cuda.is_bf16_supported():
                 self.dtype = torch.bfloat16

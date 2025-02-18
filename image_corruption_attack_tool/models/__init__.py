@@ -2,7 +2,7 @@ import torch
 import numpy as np
 from PIL import Image
 import os
-DATA_DIR = '/nvme/share/VLP_web_data'
+DATA_DIR = ''
 
 def skip(*args, **kwargs):
     pass
@@ -13,7 +13,10 @@ torch.nn.init.normal_ = skip
 
 def get_image(image):
     tmp=image.split('/')
-    image=os.path.join('/mnt/petrelfs/zhanghao1/',tmp[-3],tmp[-2],tmp[-1])#,tmp[-1]
+    if 'corruption' in tmp:
+        image=os.path.join('/data/jw/projects/B-AVIBench_jw/eval-data/',tmp[-4],tmp[-3],tmp[-2],tmp[-1])#,tmp[-1]
+    else:
+        image=os.path.join('/data/jw/projects/B-AVIBench_jw/eval-data/',tmp[-3],tmp[-2],tmp[-1])#,tmp[-1]
                     
     # print("******************",image)
     if type(image) is str:

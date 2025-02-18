@@ -1,1 +1,9 @@
 eval-data/
+
+image_corruption_attack_tool/tiny_answers/
+
+image_corruption_attack_tool/kernel_meta/
+
+*.pyc
+
+__pycache__/

@@ -1,4 +1,4 @@
-DATA_DIR = '/mnt/petrelfs/zhanghao1'
+DATA_DIR = '/data/jw/projects/B-AVIBench_jw/eval-data'
 
 import os
 import pickle
@@ -27,7 +27,11 @@ class GeneralDataset(Dataset):
     ):
         self.dataset_name = dataset_name
         print("oo",f"{DATA_DIR}/tiny_lvlm_datasets/{dataset_name}/dataset.pkl")
-        self.dataset = pickle.load(open(f"{DATA_DIR}/tiny_lvlm_datasets/{dataset_name}/dataset.pkl", 'rb'))
+        #print("oo",f"{DATA_DIR}/{dataset_name}/dataset.pkl")
+        #self.dataset = pickle.load(open(f"{DATA_DIR}/tiny_lvlm_datasets/{dataset_name}/dataset.pkl", 'rb'))
+        with open(f"{DATA_DIR}/tiny_lvlm_datasets/{dataset_name}/dataset.pkl", 'rb') as f:
+            self.dataset = pickle.load(f)
+
         print(len(self.dataset),"kk")
 
     def __len__(self):

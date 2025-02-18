@@ -5,7 +5,7 @@ from .instruct_blip.models.eva_vit import convert_weights_to_fp16
 from . import get_image, DATA_DIR
 import collections
 import os
-CKPT_PATH=f'{DATA_DIR}/otter-9b-hf'
+CKPT_PATH='/data/jw/huggingfacemodel/otter-9b-hf'
 
 
 class TestOtter:
@@ -20,7 +20,7 @@ class TestOtter:
             self.move_to_device(device)
 
     def move_to_device(self, device=None):
-        if device is not None and 'cuda' in device.type:
+        if device is not None:
             self.dtype = torch.float16
             self.device = device
             convert_weights_to_fp16(self.model.vision_encoder)
@@ -56,8 +56,14 @@ class TestOtter:
         images=[]
         for image in image_list:
             if method is not None and level!=0:
+                if level == 1:
+                    DATA_PATA = '/data/jw/projects/B-AVIBench_jw/eval-data/corruption/lvlm_tiny_corruption_1'
+                elif level == 3:
+                    DATA_PATA = '/data/jw/projects/B-AVIBench_jw/eval-data/corruption/lvlm_tiny_corruption_3'
+                elif level == 5:
+                    DATA_PATA = '/data/jw/projects/B-AVIBench_jw/eval-data/corruption/lvlm_tiny_corruption_5'
                 tmp=image.split('/')
-                image=os.path.join('/nvme/share/zhanghao/tiny_lvlm_new',tmp[-2]+'_{}_{}'.format(method,level),tmp[-1])
+                image=os.path.join(DATA_PATA,tmp[-2]+'_{}_{}'.format(method,level),tmp[-1])
             images.append(image)
         image_list=images
         ####
