@@ -12,7 +12,8 @@ def build_image_tower(image_tower_cfg, **kwargs):
     image_tower = getattr(image_tower_cfg, 'mm_image_tower', getattr(image_tower_cfg, 'image_tower', None))
     # is_absolute_path_exists = os.path.exists(image_tower)
     if image_tower.startswith("openai") or image_tower.startswith("laion"):
-        return CLIPVisionTower(image_tower, args=image_tower_cfg, cache_dir='./cache_dir', **kwargs)
+        local_model_path = '/data/jw/huggingfacemodel/clip-vit-large-patch14-336'
+        return CLIPVisionTower(local_model_path, args=image_tower_cfg, cache_dir='./cache_dir', **kwargs)
     if image_tower.startswith("google"):
         return SiglipVisionTower(image_tower, args=image_tower_cfg, cache_dir='./cache_dir', **kwargs)
     if image_tower.endswith('LanguageBind_Image'):

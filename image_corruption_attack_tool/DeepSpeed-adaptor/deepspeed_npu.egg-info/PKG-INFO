@@ -1,0 +1,13 @@
+Metadata-Version: 2.1
+Name: deepspeed_npu
+Version: 0.1
+Summary: An adaptor for deepspeed on Ascend NPU
+License: Apache2
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Requires-Python: >=3.7
+License-File: ./LICENSE

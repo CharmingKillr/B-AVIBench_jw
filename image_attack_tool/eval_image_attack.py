@@ -48,9 +48,9 @@ def sample_dataset(dataset, max_sample_num=5000, seed=0):
 
 
 def main(args):
-    os.environ['CUDA_VISIBLE_DEVICES'] = str(args.device)
-    print(torch.__version__)
-    model = get_model(args.model_name, device=torch.device('cuda'))
+    # os.environ['CUDA_VISIBLE_DEVICES'] = str(args.device)
+    # print(torch.__version__)
+    model = get_model(args.model_name, device=torch.device('npu'))
     # print(model)
     time = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
     answer_path = f"{args.answer_path}/{args.model_name}"

@@ -139,7 +139,7 @@ def load_model(model_path, model_name, dtype=torch.float16, device='cpu'):
 
 class TestLLaVA15:
     def __init__(self, device=None):
-        model_path="liuhaotian/llava-v1.5-7b"
+        model_path="/data/jw/huggingfacemodel/llava-v1.5-7b"
         model_name = get_model_name_from_path(model_path)
         self.tokenizer, self.model, self.image_processor, self.context_len = load_pretrained_model(model_path, None, model_name)
         self.conv = conv_templates['vicuna_v1'] #get_conv(model_name)
@@ -341,3 +341,11 @@ class TestLLaVA15:
                     tmp = tmp[:-len(stop_str)]
                 outputs[i] = tmp.strip() 
         return outputs
+    
+
+if __name__ == "__main__":
+    model = TestLLaVA15(device='npu:1')  # 如果有GPU，可以指定使用GPU
+    image_path = '/data/jw/projects/B-AVIBench_jw/eval-data/tiny_lvlm_datasets/NoCaps/0f17235949709331.jpg'
+    question = '这张图是什么？'
+    output = model.generate(image_path, question)
+    print(output)

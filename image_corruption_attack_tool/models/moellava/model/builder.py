@@ -51,6 +51,7 @@ from .language_model.qwen.tokenization_qwen import QWenTokenizer
 
 def load_pretrained_model(model_path, model_base, model_name, load_8bit=False, load_4bit=False, device_map="auto",
                           device="cuda", padding_side="right", merge=False, **kwargs):
+    import torch
     kwargs = {"device_map": device_map, **kwargs}
 
     if device != "cuda":

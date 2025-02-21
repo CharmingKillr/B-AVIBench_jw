@@ -13,7 +13,7 @@ torch.nn.init.normal_ = skip
 
 def get_image(image):
     tmp=image.split('/')
-    image=os.path.join('/mnt/petrelfs/zhanghao1',tmp[-3],tmp[-2],tmp[-1])#, 
+    image=os.path.join('/data/jw/projects/B-AVIBench_jw/eval-data',tmp[-3],tmp[-2],tmp[-1])#, 
     if type(image) is str:
         try:            
             return Image.open(image).convert("RGB")
