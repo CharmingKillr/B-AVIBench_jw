@@ -116,8 +116,8 @@ def call_fn(input_or_adv, label=None, unpack=True, epsilons=1000,question_list=N
         del input_or_adv
         del label
         del unpack
-
         x = a.unperturbed
+        
         bounds = a.bounds()
         min_, max_ = bounds
 

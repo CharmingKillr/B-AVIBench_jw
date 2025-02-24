@@ -6,6 +6,10 @@ from wand.image import Image as WandImage
 from wand.api import library as wandlibrary
 import wand.color as WandColor
 import torch
+
+import torch_npu
+from torch_npu.contrib import transfer_to_npu
+
 import numpy as np
 from bat.attacks import SimBA
 from models import get_model
@@ -18,9 +22,9 @@ def parse_args():
     parser = argparse.ArgumentParser(description="Demo")
 
     # models
-    parser.add_argument("--model_name", type=str, default="LLaMA-Adapter-v2")
-    parser.add_argument("--device", type=int, default=-1)
-    parser.add_argument("--batch_size", type=int, default=1)
+    parser.add_argument("--model_name", type=str, default="LLaVA15")
+    parser.add_argument("--device", type=int, default=1)
+    parser.add_argument("--batch_size", type=int, default=4)
 
     # datasets
     parser.add_argument("--dataset_name", type=str, default=None)
@@ -50,14 +54,15 @@ def sample_dataset(dataset, max_sample_num=5000, seed=0):
 def main(args):
     # os.environ['CUDA_VISIBLE_DEVICES'] = str(args.device)
     # print(torch.__version__)
+    torch_npu.npu.set_device(args.device)
     model = get_model(args.model_name, device=torch.device('npu'))
     # print(model)
     time = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
     answer_path = f"{args.answer_path}/{args.model_name}"
 
     result = {}
-    dataset_names = args.dataset_name.split(',')
-    for dataset_name in dataset_names:
+    #dataset_names = args.dataset_name.split(',')
+    for dataset_name in args.dataset_names:
         print("ll",dataset_name)
         eval_function, task_type = dataset_task_dict[dataset_name]
         # dataset = dataset_class_dict[dataset_name]()
@@ -77,4 +82,7 @@ def main(args):
 
 if __name__ == "__main__":
     args = parse_args()
+    args.dataset_names = ['ImageNetVC_color','ImageNetVC_component','ImageNetVC_material','ImageNetVC_others','ImageNetVC_shape','MSCOCO_MCI','VCR1_MCI','MSCOCO_OC','VCR1_OC','FUNSD','POIE','SROIE',
+                         'COCO-Text','CTW','CUTE80','HOST','IC13','IC15','IIIT5K','SVTP','SVT','NoCaps','Flickr','MSCOCO_caption_karpathy','WHOOPSCaption','AOKVQAClose','AOKVQAOpen','DocVQA','GQA',
+                         'OCRVQA','OKVQA','STVQA','TextVQA','WHOOPSVQA','WHOOPSWeird','Visdial','IconQA','VSR','ScienceQAIMG','VizWiz','MSCOCO_pope_random','MSCOCO_pope_adversarial','MSCOCO_pope_popular']
     main(args)

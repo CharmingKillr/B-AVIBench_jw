@@ -1,4 +1,8 @@
 import torch
+
+import torch_npu
+from torch_npu.contrib import transfer_to_npu
+
 import contextlib
 from types import MethodType
 from lavis.models import load_model_and_preprocess
@@ -23,6 +27,7 @@ import imageio
 import eagerpy as ep
 from torchvision.transforms.functional import to_pil_image
 import numpy as np
+from PIL import Image
 
 def l2_distance(a, b):
     return (np.sum((a/255.0 - b/255.0) ** 2))**0.5
@@ -76,7 +81,7 @@ class TestBlip2:
             self.move_to_device(device)
 
     def move_to_device(self, device):
-        if device is not None and 'cuda' in device.type:
+        if device is not None:
             self.dtype = torch.float32 # torch.float16
             self.device = device
         else:
@@ -99,6 +104,10 @@ class TestBlip2:
     @torch.no_grad()
     def batch_generate(self, image_list, question_list, max_new_tokens=30,method=None, level=0,gt_answer=None,max_it=None,task_name=None):
         ###
+        # 后设置
+        device = self.device
+
+
         images=[]
         for image in image_list:
             if method is not None and level!=0:
@@ -122,6 +131,10 @@ class TestBlip2:
             vis_proc=self.vis_processors
             
             image=np.asarray(imgs[ind].resize((224, 224), resample=Image.BICUBIC))
+
+            # 后设置
+            # image = torch.tensor(image, dtype=torch.float32).to(device)
+
             label = gt_answer[ind]
             attack=AdditiveGaussianNoiseAttack(model_att,task_name)
             

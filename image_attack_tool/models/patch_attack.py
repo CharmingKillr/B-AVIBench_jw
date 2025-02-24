@@ -114,11 +114,22 @@ def to_cuda(x): #将numpy转换为tensor在显卡上计算
 
 
 def l2_distance(a, b):
+    # if type(b) != torch.Tensor:
+    #     b = torch.ones_like(a).cuda() * b        
+
+    # dist = (torch.sum((torch.round(a)/255.0 - torch.round(b)/255.0) ** 2))**0.5
+    
+    # 确保 a 和 b 都在同一个设备上
+    device = a.device  # 获取 a 所在的设备
     if type(b) != torch.Tensor:
-        b = torch.ones_like(a).cuda() * b        
+        b = torch.ones_like(a).to(device) * b  # 确保 b 在相同设备上
 
-    dist = (torch.sum((torch.round(a)/255.0 - torch.round(b)/255.0) ** 2))**0.5
+    # 将 a 和 b 转换为 float32 类型
+    a = a.to(torch.float32)
+    b = b.to(torch.float32)
 
+    # 计算 L2 距离，确保使用 round 操作的张量是 float32 类型
+    dist = torch.sqrt(torch.sum((torch.round(a) / 255.0 - torch.round(b) / 255.0) ** 2))
     return dist
 
 

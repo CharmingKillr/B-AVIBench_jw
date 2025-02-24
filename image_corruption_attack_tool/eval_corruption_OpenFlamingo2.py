@@ -122,9 +122,9 @@ def main(args):
                 dataset = GeneralDataset(dataset_name) 
                 metrics = eval_function(model, dataset, args.model_name, dataset_name, task_type, time, args.batch_size, answer_path=answer_path, method=method_name, level=k)
                 result["{}_severity_{}_{}".format(dataset_name,method_name,k)] = metrics                
-    result_path = os.path.join(os.path.join(answer_path, time), 'result.json')    
-    with open(result_path, "w") as f:
-        f.write(json.dumps(result, indent=4))
+                result_path = os.path.join(os.path.join(answer_path, time), 'result.json')    
+                with open(result_path, "w") as f:
+                    f.write(json.dumps(result, indent=4))
 
 
 if __name__ == "__main__":

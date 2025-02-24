@@ -7,3 +7,5 @@ image_corruption_attack_tool/kernel_meta/
 *.pyc
 
 __pycache__/
+
+*/kernel_meta/

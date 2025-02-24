@@ -2,7 +2,7 @@ import torch
 import numpy as np
 from PIL import Image
 import os
-DATA_DIR = '/mnt/petrelfs/zhanghao1'
+
 
 def skip(*args, **kwargs):
     pass
