@@ -35,7 +35,7 @@ def parse_args():
     # models
     parser.add_argument("--model_name", type=str, default="OFv2")
     parser.add_argument("--device", type=int, default=2)
-    parser.add_argument("--batch_size", type=int, default=4)
+    parser.add_argument("--batch_size", type=int, default=8)
 
     # datasets
     parser.add_argument("--dataset_name", type=str, default='ImageNetVC_component')
@@ -93,8 +93,7 @@ def main(args):
     # 将随机端口号设置为环境变量    os.environ['MASTER_PORT'] = str(port)
     time = datetime.datetime.now().strftime("%Y_%m%d_%H_%M_%S")
     answer_path = f"{args.answer_path}/{args.model_name}"
-    torch_npu.npu.set_device(args.device)
-    model = get_model(args.model_name, device=torch.device('npu')) 
+    model = get_model(args.model_name, device=torch.device('cuda')) 
        
 
     result = {}

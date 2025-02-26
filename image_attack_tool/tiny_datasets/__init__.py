@@ -1,4 +1,4 @@
-DATA_DIR = '/data/jw/projects/B-AVIBench_jw/eval-data'
+DATA_DIR = '/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/eval-data'
 
 import os
 import pickle

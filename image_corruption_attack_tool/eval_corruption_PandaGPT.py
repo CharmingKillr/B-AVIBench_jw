@@ -2,14 +2,10 @@ import os
 import json
 import argparse
 import datetime
-from wand.image import Image as WandImage
-from wand.api import library as wandlibrary
-import wand.color as WandColor
+#from wand.image import Image as WandImage
+#from wand.api import library as wandlibrary
+#import wand.color as WandColor
 import torch
-
-import torch_npu
-from torch_npu.contrib import transfer_to_npu
-
 import numpy as np
 import random
 from models import get_model
@@ -39,7 +35,7 @@ def parse_args():
     # models
     parser.add_argument("--model_name", type=str, default="PandaGPT")
     parser.add_argument("--device", type=int, default=4)
-    parser.add_argument("--batch_size", type=int, default=4)
+    parser.add_argument("--batch_size", type=int, default=8)
 
     # datasets
     parser.add_argument("--dataset_name", type=str, default='ImageNetVC_component')
@@ -47,7 +43,7 @@ def parse_args():
     parser.add_argument("--sample_seed", type=int, default=20230719)
 
     # result_path
-    parser.add_argument("--answer_path", type=str, default="/data/jw/projects/B-AVIBench_jw/image_corruption_attack_tool/tiny_answers")
+    parser.add_argument("--answer_path", type=str, default="/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/image_corruption_attack_tool/tiny_answers")
 
     # renew
     parser.add_argument("--renew", action="store_true", default=False)
@@ -97,13 +93,12 @@ def main(args):
     # 将随机端口号设置为环境变量    os.environ['MASTER_PORT'] = str(port)
     time = datetime.datetime.now().strftime("%Y_%m%d_%H_%M_%S")
     answer_path = f"{args.answer_path}/{args.model_name}"
-    torch_npu.npu.set_device(args.device)
-    model = get_model(args.model_name, device=torch.device('npu')) 
+    model = get_model(args.model_name, device=torch.device('cuda')) 
        
 
     result = {}
     #dataset_names = args.dataset_name.split(',')
-    args.renew = True
+    args.renew = False
     if args.renew :
         time_renew = '2025_0202_13_49_20'
         time = time_renew

@@ -30,47 +30,47 @@ def evaluate_VQA(
     ###
     data_new=[]
     if model_name=="LLaVA15": 
-        new_dataset_path = f'/data/jw/projects/B-AVIBench_jw/image_attack_tool/tiny_attack_datasets/LLaVA15/noise/{dataset_name}'
+        new_dataset_path = f'/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/image_attack_tool/tiny_attack_datasets/LLaVA15/noise/{dataset_name}'
         if not os.path.exists(new_dataset_path):
             os.makedirs(new_dataset_path, exist_ok=True)
-            os.makedirs(f'/data/jw/projects/B-AVIBench_jw/image_attack_tool/tiny_attack_datasets/LLaVA15/patch/{dataset_name}', exist_ok=True)
-            os.makedirs(f'/data/jw/projects/B-AVIBench_jw/image_attack_tool/tiny_attack_datasets/LLaVA15/boundary/{dataset_name}', exist_ok=True)
-            os.makedirs(f'/data/jw/projects/B-AVIBench_jw/image_attack_tool/tiny_attack_datasets/LLaVA15/SurFree/{dataset_name}', exist_ok=True)
+            os.makedirs(f'/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/image_attack_tool/tiny_attack_datasets/LLaVA15/patch/{dataset_name}', exist_ok=True)
+            os.makedirs(f'/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/image_attack_tool/tiny_attack_datasets/LLaVA15/boundary/{dataset_name}', exist_ok=True)
+            os.makedirs(f'/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/image_attack_tool/tiny_attack_datasets/LLaVA15/SurFree/{dataset_name}', exist_ok=True)
     elif model_name=="OFv2": 
-        new_dataset_path = f'/data/jw/projects/B-AVIBench_jw/image_attack_tool/tiny_attack_datasets/OFv2/noise/{dataset_name}'
+        new_dataset_path = f'/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/image_attack_tool/tiny_attack_datasets/OFv2/noise/{dataset_name}'
         if not os.path.exists(new_dataset_path):
             os.makedirs(new_dataset_path, exist_ok=True)
-            os.makedirs(f'/data/jw/projects/B-AVIBench_jw/image_attack_tool/tiny_attack_datasets/OFv2/patch/{dataset_name}', exist_ok=True)
-            os.makedirs(f'/data/jw/projects/B-AVIBench_jw/image_attack_tool/tiny_attack_datasets/OFv2/boundary/{dataset_name}', exist_ok=True)
-            os.makedirs(f'/data/jw/projects/B-AVIBench_jw/image_attack_tool/tiny_attack_datasets/OFv2/SurFree/{dataset_name}', exist_ok=True)
+            os.makedirs(f'/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/image_attack_tool/tiny_attack_datasets/OFv2/patch/{dataset_name}', exist_ok=True)
+            os.makedirs(f'/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/image_attack_tool/tiny_attack_datasets/OFv2/boundary/{dataset_name}', exist_ok=True)
+            os.makedirs(f'/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/image_attack_tool/tiny_attack_datasets/OFv2/SurFree/{dataset_name}', exist_ok=True)
     elif model_name=="internlm-xcomposer": 
-        new_dataset_path = f'/data/jw/projects/B-AVIBench_jw/image_attack_tool/tiny_attack_datasets/internlm-xcomposer/noise/{dataset_name}'
+        new_dataset_path = f'/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/image_attack_tool/tiny_attack_datasets/internlm-xcomposer/noise/{dataset_name}'
         if not os.path.exists(new_dataset_path):
             os.makedirs(new_dataset_path, exist_ok=True)
-            os.makedirs(f'/data/jw/projects/B-AVIBench_jw/image_attack_tool/tiny_attack_datasets/internlm-xcomposer/patch/{dataset_name}', exist_ok=True)
-            os.makedirs(f'/data/jw/projects/B-AVIBench_jw/image_attack_tool/tiny_attack_datasets/internlm-xcomposer/boundary/{dataset_name}', exist_ok=True)
-            os.makedirs(f'/data/jw/projects/B-AVIBench_jw/image_attack_tool/tiny_attack_datasets/internlm-xcomposer/SurFree/{dataset_name}', exist_ok=True)
+            os.makedirs(f'/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/image_attack_tool/tiny_attack_datasets/internlm-xcomposer/patch/{dataset_name}', exist_ok=True)
+            os.makedirs(f'/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/image_attack_tool/tiny_attack_datasets/internlm-xcomposer/boundary/{dataset_name}', exist_ok=True)
+            os.makedirs(f'/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/image_attack_tool/tiny_attack_datasets/internlm-xcomposer/SurFree/{dataset_name}', exist_ok=True)
     elif model_name=="Qwen": 
-        new_dataset_path = f'/data/jw/projects/B-AVIBench_jw/image_attack_tool/tiny_attack_datasets/Qwen/noise/{dataset_name}'
+        new_dataset_path = f'/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/image_attack_tool/tiny_attack_datasets/Qwen/noise/{dataset_name}'
         if not os.path.exists(new_dataset_path):
             os.makedirs(new_dataset_path, exist_ok=True)
-            os.makedirs(f'/data/jw/projects/B-AVIBench_jw/image_attack_tool/tiny_attack_datasets/Qwen/patch/{dataset_name}', exist_ok=True)
-            os.makedirs(f'/data/jw/projects/B-AVIBench_jw/image_attack_tool/tiny_attack_datasets/Qwen/boundary/{dataset_name}', exist_ok=True)
-            os.makedirs(f'/data/jw/projects/B-AVIBench_jw/image_attack_tool/tiny_attack_datasets/Qwen/SurFree/{dataset_name}', exist_ok=True)
+            os.makedirs(f'/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/image_attack_tool/tiny_attack_datasets/Qwen/patch/{dataset_name}', exist_ok=True)
+            os.makedirs(f'/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/image_attack_tool/tiny_attack_datasets/Qwen/boundary/{dataset_name}', exist_ok=True)
+            os.makedirs(f'/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/image_attack_tool/tiny_attack_datasets/Qwen/SurFree/{dataset_name}', exist_ok=True)
     elif model_name=="moellava" : 
-        new_dataset_path = f'/data/jw/projects/B-AVIBench_jw/image_attack_tool/tiny_attack_datasets/moellava/noise/{dataset_name}'
+        new_dataset_path = f'/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/image_attack_tool/tiny_attack_datasets/moellava/noise/{dataset_name}'
         if not os.path.exists(new_dataset_path):
             os.makedirs(new_dataset_path, exist_ok=True)
-            os.makedirs(f'/data/jw/projects/B-AVIBench_jw/image_attack_tool/tiny_attack_datasets/moellava/patch/{dataset_name}', exist_ok=True)
-            os.makedirs(f'/data/jw/projects/B-AVIBench_jw/image_attack_tool/tiny_attack_datasets/moellava/boundary/{dataset_name}', exist_ok=True)
-            os.makedirs(f'/data/jw/projects/B-AVIBench_jw/image_attack_tool/tiny_attack_datasets/moellava/SurFree/{dataset_name}', exist_ok=True)
+            os.makedirs(f'/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/image_attack_tool/tiny_attack_datasets/moellava/patch/{dataset_name}', exist_ok=True)
+            os.makedirs(f'/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/image_attack_tool/tiny_attack_datasets/moellava/boundary/{dataset_name}', exist_ok=True)
+            os.makedirs(f'/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/image_attack_tool/tiny_attack_datasets/moellava/SurFree/{dataset_name}', exist_ok=True)
     elif model_name=="sharegpt4v" : 
-        new_dataset_path = f'/data/jw/projects/B-AVIBench_jw/image_attack_tool /tiny_attack_datasets/sharegpt4v/noise/{dataset_name}'
+        new_dataset_path = f'/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/image_attack_tool /tiny_attack_datasets/sharegpt4v/noise/{dataset_name}'
         if not os.path.exists(new_dataset_path):
             os.makedirs(new_dataset_path, exist_ok=True)
-            os.makedirs(f'/data/jw/projects/B-AVIBench_jw/image_attack_tool/tiny_attack_datasets/sharegpt4v/patch/{dataset_name}', exist_ok=True)
-            os.makedirs(f'/data/jw/projects/B-AVIBench_jw/image_attack_tool/tiny_attack_datasets/sharegpt4v/boundary/{dataset_name}', exist_ok=True)
-            os.makedirs(f'/data/jw/projects/B-AVIBench_jw/image_attack_tool/tiny_attack_datasets/sharegpt4v/SurFree/{dataset_name}', exist_ok=True)
+            os.makedirs(f'/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/image_attack_tool/tiny_attack_datasets/sharegpt4v/patch/{dataset_name}', exist_ok=True)
+            os.makedirs(f'/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/image_attack_tool/tiny_attack_datasets/sharegpt4v/boundary/{dataset_name}', exist_ok=True)
+            os.makedirs(f'/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/image_attack_tool/tiny_attack_datasets/sharegpt4v/SurFree/{dataset_name}', exist_ok=True)
     ###
     for batch in tqdm(dataloader, desc="Running inference"):  
         if dataset_name=="ImageNetVC_color" or dataset_name=="ImageNetVC_component" or dataset_name=="ImageNetVC_material" or dataset_name=="ImageNetVC_others" or dataset_name=="ImageNetVC_shape":

@@ -50,10 +50,9 @@ def sample_dataset(dataset, max_sample_num=5000, seed=0):
 def main(args):
     # os.environ['CUDA_VISIBLE_DEVICES'] = str(args.device)
     # print(torch.__version__)
-    torch_npu.npu.set_device(args.device)
     model = get_model(args.model_name, device=torch.device('cuda'))
     # print(model)
-    time = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+    time = datetime.datetime.now().strftime("%Y_%m%d_%H_%M_%S")
     answer_path = f"{args.answer_path}/{args.model_name}"
 
     result = {}
