@@ -42,9 +42,9 @@ class TestPandaGPT:
     def __init__(self, device=None):
         args = {
             'model': 'openllama_peft',
-            'imagebind_ckpt_path': '/data/jw/dataset/weights/PandaGPT/imagebind_ckpt',
-            'vicuna_ckpt_path': '/data/jw/huggingfacemodel/vicuna-7b-delta-v0',
-            'delta_ckpt_path': '/data/jw/dataset/weights/PandaGPT/pytorch_model.pt',
+            'imagebind_ckpt_path': '/seu_nvme/home/230239304/dataset/weights/PandaGPT/imagebind_ckpt',
+            'vicuna_ckpt_path': '/seu_nvme/home/230239304/huggingfacemodel/vicuna-7b-delta-v0',
+            'delta_ckpt_path': '/seu_nvme/home/230239304/dataset/weights/PandaGPT/pytorch_model.pt',
             'stage': 2,
             'max_tgt_len': 128,
             'lora_r': 32,
@@ -79,11 +79,11 @@ class TestPandaGPT:
         for image in image_list:
             if method is not None and level!=0:
                 if level == 1:
-                    DATA_PATA = '/data/jw/projects/B-AVIBench_jw/eval-data/corruption/lvlm_tiny_corruption_1'
+                    DATA_PATA = '/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/eval-data/corruption/lvlm_tiny_corruption_1'
                 elif level == 3:
-                    DATA_PATA = '/data/jw/projects/B-AVIBench_jw/eval-data/corruption/lvlm_tiny_corruption_3'
+                    DATA_PATA = '/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/eval-data/corruption/lvlm_tiny_corruption_3'
                 elif level == 5:
-                    DATA_PATA = '/data/jw/projects/B-AVIBench_jw/eval-data/corruption/lvlm_tiny_corruption_5'
+                    DATA_PATA = '/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/eval-data/corruption/lvlm_tiny_corruption_5'
                 tmp=image.split('/')
                 image=os.path.join(DATA_PATA,tmp[-2]+'_{}_{}'.format(method,level),tmp[-1])
             # else:

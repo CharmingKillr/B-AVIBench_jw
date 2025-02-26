@@ -2,14 +2,10 @@ import os
 import json
 import argparse
 import datetime
-from wand.image import Image as WandImage
-from wand.api import library as wandlibrary
-import wand.color as WandColor
+#from wand.image import Image as WandImage
+#from wand.api import library as wandlibrary
+#import wand.color as WandColor
 import torch
-
-import torch_npu
-from torch_npu.contrib import transfer_to_npu
-
 import numpy as np
 import random
 from models import get_model
@@ -47,7 +43,7 @@ def parse_args():
     parser.add_argument("--sample_seed", type=int, default=20230719)
 
     # result_path
-    parser.add_argument("--answer_path", type=str, default="/data/jw/projects/B-AVIBench_jw/image_corruption_attack_tool/tiny_answers")
+    parser.add_argument("--answer_path", type=str, default="/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/image_corruption_attack_tool/tiny_answers")
 
     # renew
     parser.add_argument("--renew", action="store_true", default=False)
@@ -103,7 +99,7 @@ def main(args):
 
     result = {}
 
-    args.renew = True
+    args.renew = False
     if args.renew :
         time_renew = '2025_0201_01_22_14'
         time = time_renew

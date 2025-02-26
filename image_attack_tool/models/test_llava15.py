@@ -139,7 +139,7 @@ def load_model(model_path, model_name, dtype=torch.float16, device='cpu'):
 
 class TestLLaVA15:
     def __init__(self, device=None):
-        model_path="/data/jw/huggingfacemodel/llava-v1.5-7b"
+        model_path="/seu_nvme/home/230239304/huggingfacemodel/llava-v1.5-7b"
         model_name = get_model_name_from_path(model_path)
         self.tokenizer, self.model, self.image_processor, self.context_len = load_pretrained_model(model_path, None, model_name)
         self.conv = conv_templates['vicuna_v1'] #get_conv(model_name)

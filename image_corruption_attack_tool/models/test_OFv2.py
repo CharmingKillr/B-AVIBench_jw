@@ -27,13 +27,13 @@ class OFv2(nn.Module):
         elif version == '4BI':
             model, image_processor, tokenizer = create_model_and_transforms(
                 clip_vision_encoder_path="ViT-L-14",
-                clip_vision_encoder_pretrained="/data/jw/dataset/weights/clip/ViT-L-14.pt",
-                lang_encoder_path="/data/jw/huggingfacemodel/RedPajama-INCITE-Instruct-3B-v1",
-                tokenizer_path="/data/jw/huggingfacemodel/RedPajama-INCITE-Instruct-3B-v1",
+                clip_vision_encoder_pretrained="/seu_nvme/home/230239304/dataset/weights/clip/ViT-L-14.pt",
+                lang_encoder_path="/seu_nvme/home/230239304/huggingfacemodel/RedPajama-INCITE-Instruct-3B-v1",
+                tokenizer_path="/seu_nvme/home/230239304/huggingfacemodel/RedPajama-INCITE-Instruct-3B-v1",
                 cross_attn_every_n_layers=2
                 #/nvme/share/huggingface_cache
             )
-            checkpoint_path = '/data/jw/dataset/weights/OpenFlamingo-4B-vitl-rpj3b-langinstruct_checkpoint.pt'
+            checkpoint_path = '/seu_nvme/home/230239304/dataset/weights/OpenFlamingo-4B-vitl-rpj3b-langinstruct_checkpoint.pt'
             #checkpoint_path = hf_hub_download("openflamingo/OpenFlamingo-4B-vitl-rpj3b-langinstruct", "checkpoint.pt",cache_dir="/home/xupeng/.cache/huggingface")
         else:
             raise ValueError(f'OpenFlamingo v2 {version} NOT supported yet!')
@@ -69,11 +69,11 @@ class OFv2(nn.Module):
         for image in image_list:
             if method is not None and level!=0:
                 if level == 1:
-                    DATA_PATA = '/data/jw/projects/B-AVIBench_jw/eval-data/corruption/lvlm_tiny_corruption_1'
+                    DATA_PATA = '/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/eval-data/corruption/lvlm_tiny_corruption_1'
                 elif level == 3:
-                    DATA_PATA = '/data/jw/projects/B-AVIBench_jw/eval-data/corruption/lvlm_tiny_corruption_3'
+                    DATA_PATA = '/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/eval-data/corruption/lvlm_tiny_corruption_3'
                 elif level == 5:
-                    DATA_PATA = '/data/jw/projects/B-AVIBench_jw/eval-data/corruption/lvlm_tiny_corruption_5'
+                    DATA_PATA = '/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/eval-data/corruption/lvlm_tiny_corruption_5'
                 tmp=image.split('/')
                 image=os.path.join(DATA_PATA,tmp[-2]+'_{}_{}'.format(method,level),tmp[-1])
             images.append(image)

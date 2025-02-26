@@ -1,8 +1,4 @@
 import torch
-
-import torch_npu
-from torch_npu.contrib import transfer_to_npu
-
 import contextlib
 from types import MethodType
 from lavis.models import load_model_and_preprocess

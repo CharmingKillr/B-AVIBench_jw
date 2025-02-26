@@ -2,14 +2,10 @@ import os
 import json
 import argparse
 import datetime
-from wand.image import Image as WandImage
-from wand.api import library as wandlibrary
-import wand.color as WandColor
+#from wand.image import Image as WandImage
+#from wand.api import library as wandlibrary
+#import wand.color as WandColor
 import torch
-
-import torch_npu
-from torch_npu.contrib import transfer_to_npu
-
 import numpy as np
 from bat.attacks import SimBA
 from models import get_model
@@ -55,7 +51,7 @@ def main(args):
     # os.environ['CUDA_VISIBLE_DEVICES'] = str(args.device)
     # print(torch.__version__)
     torch_npu.npu.set_device(args.device)
-    model = get_model(args.model_name, device=torch.device('npu'))
+    model = get_model(args.model_name, device=torch.device('cuda'))
     # print(model)
     time = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
     answer_path = f"{args.answer_path}/{args.model_name}"
