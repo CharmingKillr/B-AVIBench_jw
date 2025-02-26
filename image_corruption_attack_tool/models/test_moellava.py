@@ -1,7 +1,6 @@
 import argparse
 import json
 from io import BytesIO
-
 import requests
 import torch
 from PIL import Image
@@ -23,7 +22,7 @@ import pdb
 class Testmoellava:
     def __init__(self, device=None):
         # model_path="LanguageBind/MoE-LLaVA-Phi2-2.7B-4e"
-        model_path="/data/jw/huggingfacemodel/MoE-LLaVA-Qwen-1.8B-4e"
+        model_path="/seu_nvme/home/230239304/huggingfacemodel/MoE-LLaVA-Qwen-1.8B-4e"
         model_name = get_model_name_from_path(model_path)
         self.tokenizer, self.model, self.image_processor, self.context_len = load_pretrained_model(
         model_path, None, model_name)        
@@ -60,11 +59,11 @@ class Testmoellava:
                 # tmp=image.split('/')
                 # image=os.path.join('/mnt/petrelfs/zhanghao1/tiny_lvlm_new',tmp[-2]+'_{}_{}'.format(method,level),tmp[-1])#,tmp[-1]
                 if level == 1:
-                    DATA_PATA = '/data/jw/projects/B-AVIBench_jw/eval-data/corruption/lvlm_tiny_corruption_1'
+                    DATA_PATA = '/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/eval-data/corruption/lvlm_tiny_corruption_1'
                 elif level == 3:
-                    DATA_PATA = '/data/jw/projects/B-AVIBench_jw/eval-data/corruption/lvlm_tiny_corruption_3'
+                    DATA_PATA = '/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/eval-data/corruption/lvlm_tiny_corruption_3'
                 elif level == 5:
-                    DATA_PATA = '/data/jw/projects/B-AVIBench_jw/eval-data/corruption/lvlm_tiny_corruption_5'
+                    DATA_PATA = '/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/eval-data/corruption/lvlm_tiny_corruption_5'
                 tmp=image.split('/')
                 image=os.path.join(DATA_PATA,tmp[-2]+'_{}_{}'.format(method,level),tmp[-1])
             elif 'attack' in image:

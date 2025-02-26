@@ -43,7 +43,7 @@ def parse_args():
     parser.add_argument("--sample_seed", type=int, default=20230719)
 
     # result_path
-    parser.add_argument("--answer_path", type=str, default="/data/jw/projects/B-AVIBench_jw/image_corruption_attack_tool/tiny_answers")
+    parser.add_argument("--answer_path", type=str, default="/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/image_corruption_attack_tool/tiny_answers")
 
     # renew
     parser.add_argument("--renew", action="store_true", default=False)

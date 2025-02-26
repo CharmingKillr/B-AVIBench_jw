@@ -8,12 +8,7 @@ import importlib
 import math
 import pathlib
 from typing import TYPE_CHECKING, Optional, Tuple, Union, Callable, List, Any, Generator
-
 import torch
-
-import torch_npu
-from torch_npu.contrib import transfer_to_npu
-
 import torch.nn.functional as F
 import torch.utils.checkpoint
 import warnings
@@ -38,16 +33,10 @@ except ImportError:
     rearrange = None
 from torch import nn
 
-if torch_npu.npu.is_available():
-    SUPPORT_CUDA = torch.cuda.is_available()
-    SUPPORT_BF16 = SUPPORT_CUDA and torch.cuda.is_bf16_supported()
-    SUPPORT_FP16 = True
-    SUPPORT_TORCH2 = hasattr(torch, '__version__') and int(torch.__version__.split(".")[0]) >= 2
-else:
-    SUPPORT_CUDA = torch.cuda.is_available()
-    SUPPORT_BF16 = SUPPORT_CUDA and torch.cuda.is_bf16_supported()
-    SUPPORT_FP16 = SUPPORT_CUDA and torch.cuda.get_device_capability(0)[0] >= 7
-    SUPPORT_TORCH2 = hasattr(torch, '__version__') and int(torch.__version__.split(".")[0]) >= 2
+SUPPORT_CUDA = torch.cuda.is_available()
+SUPPORT_BF16 = SUPPORT_CUDA and torch.cuda.is_bf16_supported()
+SUPPORT_FP16 = SUPPORT_CUDA and torch.cuda.get_device_capability(0)[0] >= 7
+SUPPORT_TORCH2 = hasattr(torch, '__version__') and int(torch.__version__.split(".")[0]) >= 2
 
 
 from .configuration_qwen import QWenConfig
