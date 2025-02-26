@@ -190,7 +190,7 @@ class TestBlip2:
             if check_1 and check_2:  
                 start_time4= time.time()
                 attacker = SurFree(steps=patch_remain_access, max_queries=patch_remain_access,task=task_name,label=label)
-                config = json.load(open("models/config_example.json", "r"))
+                config = json.load(open("/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/image_attack_tool/models/config_example.json", "r"))
                 new_image = torch.tensor(image, dtype=torch.float32).permute(2, 0, 1).unsqueeze(0).cuda()
                 new_starting_points = torch.tensor(patch_adversarial_1, dtype=torch.float32).permute(2, 0, 1).unsqueeze(0).cuda()                
                 temp_result = attacker(model_att, new_image, starting_points=new_starting_points, **config["run"], question_list=question_list[ind], chat_list=None, max_new_tokens=max_new_tokens,model_name=model_name,vis_proc=vis_proc)

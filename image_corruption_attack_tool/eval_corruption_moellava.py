@@ -2,14 +2,10 @@ import os
 import json
 import argparse
 import datetime
-from wand.image import Image as WandImage
-from wand.api import library as wandlibrary
-import wand.color as WandColor
+#from wand.image import Image as WandImage
+#from wand.api import library as wandlibrary
+#import wand.color as WandColor
 import torch
-
-import torch_npu
-from torch_npu.contrib import transfer_to_npu
-
 import numpy as np
 import random
 from models import get_model
@@ -97,8 +93,7 @@ def main(args):
     # 将随机端口号设置为环境变量    os.environ['MASTER_PORT'] = str(port)
     time = datetime.datetime.now().strftime("%Y_%m%d_%H_%M_%S")
     answer_path = f"{args.answer_path}/{args.model_name}"
-    torch_npu.npu.set_device(args.device)
-    model = get_model(args.model_name, device=torch.device('npu')) 
+    model = get_model(args.model_name, device=torch.device('cuda')) 
        
 
     result = {}
