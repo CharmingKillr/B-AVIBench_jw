@@ -9,3 +9,17 @@ image_corruption_attack_tool/kernel_meta/
 __pycache__/
 
 */kernel_meta/
+
+*.sock
+
+serve-web-key-half
+
+coder.json
+
+User/
+
+logs/
+
+CachedProfilesData/
+
+extensions/
