@@ -24,7 +24,7 @@ import pdb
 
 class Testsharegpt4v:
     def __init__(self, device=None):
-        model_path="Lin-Chen/ShareGPT4V-7B"
+        model_path="/seu_nvme/home/230239304/huggingfacemodel/ShareGPT4V-7B"
         model_name = get_model_name_from_path(model_path)
         self.tokenizer, self.model, self.image_processor, self.context_len = load_pretrained_model(
         model_path, None, model_name)        
@@ -58,8 +58,14 @@ class Testsharegpt4v:
         for image, question in zip(image_list, question_list):
             # print("jfk",image)
             if method is not None and level!=0:
+                if level == 1:
+                    DATA_PATA = '/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/eval-data/corruption/lvlm_tiny_corruption_1'
+                elif level == 3:
+                    DATA_PATA = '/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/eval-data/corruption/lvlm_tiny_corruption_3'
+                elif level == 5:
+                    DATA_PATA = '/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/eval-data/corruption/lvlm_tiny_corruption_5'
                 tmp=image.split('/')
-                image=os.path.join('/mnt/petrelfs/zhanghao1/tiny_lvlm_new',tmp[-2]+'_{}_{}'.format(method,level),tmp[-1])#,tmp[-1]
+                image=os.path.join(DATA_PATA,tmp[-2]+'_{}_{}'.format(method,level),tmp[-1])
             elif 'attack' in image:
                 tmp=image.split('/')
                 image=os.path.join('/mnt/petrelfs/zhanghao1/attack_dataset',tmp[-2],tmp[-1])#,tmp[-1]

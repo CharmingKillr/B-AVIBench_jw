@@ -22,7 +22,7 @@ model:
   num_query_token: 32
 
   # path to Vicuna checkpoint
-  llm_model: "eachadea/vicuna-7b-1.1"
+  llm_model: "/seu_nvme/home/230239304/huggingfacemodel/vicuna-7b-1.1"
 
   # generation configs
   prompt: ""

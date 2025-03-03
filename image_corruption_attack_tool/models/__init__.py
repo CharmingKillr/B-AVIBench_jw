@@ -14,9 +14,9 @@ torch.nn.init.normal_ = skip
 def get_image(image):
     tmp=image.split('/')
     if 'corruption' in tmp:
-        image=os.path.join('/data/jw/projects/B-AVIBench_jw/eval-data/',tmp[-4],tmp[-3],tmp[-2],tmp[-1])#,tmp[-1]
+        image=os.path.join('/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/eval-data/',tmp[-4],tmp[-3],tmp[-2],tmp[-1])#,tmp[-1]
     else:
-        image=os.path.join('/data/jw/projects/B-AVIBench_jw/eval-data/',tmp[-3],tmp[-2],tmp[-1])#,tmp[-1]
+        image=os.path.join('/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/eval-data/',tmp[-3],tmp[-2],tmp[-1])#,tmp[-1]
                     
     # print("******************",image)
     if type(image) is str:

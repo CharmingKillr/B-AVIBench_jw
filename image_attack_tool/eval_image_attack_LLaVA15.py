@@ -30,6 +30,8 @@ def parse_args():
     # result_path
     parser.add_argument("--answer_path", type=str, default="/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/image_attack_tool/tiny_answers")
 
+    # renew
+    parser.add_argument("--renew", action="store_true", default=False)
     args = parser.parse_args()
     return args
 
@@ -48,22 +50,24 @@ def sample_dataset(dataset, max_sample_num=5000, seed=0):
 
 
 def main(args):
-    # os.environ['CUDA_VISIBLE_DEVICES'] = str(args.device)
-    # print(torch.__version__)
     model = get_model(args.model_name, device=torch.device('cuda'))
-    # print(model)
     time = datetime.datetime.now().strftime("%Y_%m%d_%H_%M_%S")
     answer_path = f"{args.answer_path}/{args.model_name}"
 
-    result = {}
-    #dataset_names = args.dataset_name.split(',')
+    args.renew = True
+    if args.renew :
+        time_renew = '2025_0227_06_44_15'
+        time = time_renew
+
     for dataset_name in args.dataset_names:
+        final_path = os.path.join(os.path.join(answer_path, time), 'result_{}.json'.format(dataset_name))
+        if args.renew and os.path.exists(final_path):
+                    print(f"result file {final_path} exists, skip.")
+                    continue
         print("ll",dataset_name)
+        result = {}
         eval_function, task_type = dataset_task_dict[dataset_name]
-        # dataset = dataset_class_dict[dataset_name]()
-        # dataset = sample_dataset(dataset, args.sample_num, args.sample_seed)
-        dataset = GeneralDataset(dataset_name)
-        # for method_name in method:     
+        dataset = GeneralDataset(dataset_name)    
         
         metrics = eval_function(model, dataset, args.model_name, dataset_name, task_type, time, args.batch_size, answer_path=answer_path, method=None, level=0)
         print("***---",metrics)

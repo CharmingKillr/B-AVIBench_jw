@@ -6,10 +6,10 @@ model:
   max_txt_len: 160
   end_sym: "###"
   low_resource: True
-  prompt_path: "MiniGPT-4/alignment.txt"
+  prompt_path: "/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/image_corruption_attack_tool/models/minigpt4/alignment.txt"
   prompt_template: '###Human: {} ###Assistant: '
   pretrained: 'https://thunlp.oss-cn-qingdao.aliyuncs.com/vpgtrans/vl-vicuna.pth'
-  llama_model: "VPGTrans_Vicuna"
+  llama_model: "/seu_nvme/home/230239304/huggingfacemodel/VPGTrans_Vicuna"
 
 
 preprocess:

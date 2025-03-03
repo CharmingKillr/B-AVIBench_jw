@@ -46,7 +46,7 @@ def evaluate_Caption(
         attack_patch_boundary=attack_patch_boundary+outputs[0][2]
         attack_patch_SurFree=attack_patch_SurFree+outputs[0][3]
 
-    if sum(index_attack)!=0:
+    if sum(index_attack)!=0 and sum(attack_success) != 0 :
         metrics = {
         'success_rate': sum(attack_success)/sum(index_attack),
         "attack_num": sum(index_attack),

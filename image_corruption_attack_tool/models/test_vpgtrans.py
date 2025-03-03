@@ -12,7 +12,7 @@ from . import get_image, DATA_DIR
 
 
 
-CFG_PATH = 'models/vpgtrans/vpgtrans_demo.yaml'
+CFG_PATH = '/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/image_corruption_attack_tool/models/vpgtrans/vpgtrans_demo.yaml'
 
 
 class TestVPGTrans:
@@ -62,8 +62,14 @@ class TestVPGTrans:
         images=[]
         for image in image_list:
             if method is not None and level!=0:
+                if level == 1:
+                    DATA_PATA = '/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/eval-data/corruption/lvlm_tiny_corruption_1'
+                elif level == 3:
+                    DATA_PATA = '/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/eval-data/corruption/lvlm_tiny_corruption_3'
+                elif level == 5:
+                    DATA_PATA = '/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/eval-data/corruption/lvlm_tiny_corruption_5'
                 tmp=image.split('/')
-                image=os.path.join('/nvme/share/zhanghao/tiny_lvlm_new',tmp[-2]+'_{}_{}'.format(method,level),tmp[-1])
+                image=os.path.join(DATA_PATA,tmp[-2]+'_{}_{}'.format(method,level),tmp[-1])
             images.append(image)
         image_list=images
         ####

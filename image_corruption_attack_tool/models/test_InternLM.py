@@ -8,7 +8,7 @@ import base64
 import torch
 from transformers import StoppingCriteria, StoppingCriteriaList
 from typing import Optional
-import xlsxwriter
+#import xlsxwriter
 import pandas as pd
 from PIL import Image
 import collections
@@ -265,8 +265,8 @@ def convert_weights_to_fp32(model: nn.Module):
 class TestInternLM:
     def __init__(self, device=None) -> None:
         # model_path=CKPT_PATH
-        self.model = AutoModel.from_pretrained('internlm/internlm-xcomposer-7b', trust_remote_code=True,cache_dir="/home/zhanghao1/.cache/huggingface/hub").cuda().eval()
-        self.tokenizer = AutoTokenizer.from_pretrained('internlm/internlm-xcomposer-7b', trust_remote_code=True)
+        self.model = AutoModel.from_pretrained('/seu_nvme/home/230239304/huggingfacemodel/internlm-xcomposer-7b', trust_remote_code=True,cache_dir="/seu_nvme/home/230239304/huggingfacemodel/hub").cuda().eval()
+        self.tokenizer = AutoTokenizer.from_pretrained('/seu_nvme/home/230239304/huggingfacemodel/internlm-xcomposer-7b', trust_remote_code=True)
         self.model.tokenizer = self.tokenizer       
 
         if device is not None:
@@ -322,11 +322,17 @@ class TestInternLM:
         images=[]
         for image in image_list:
             if method is not None and level!=0:
+                if level == 1:
+                    DATA_PATA = '/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/eval-data/corruption/lvlm_tiny_corruption_1'
+                elif level == 3:
+                    DATA_PATA = '/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/eval-data/corruption/lvlm_tiny_corruption_3'
+                elif level == 5:
+                    DATA_PATA = '/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/eval-data/corruption/lvlm_tiny_corruption_5'
                 tmp=image.split('/')
-                image=os.path.join('/nvme/share/zhanghao/tiny_lvlm_new',tmp[-2]+'_{}_{}'.format(method,level),tmp[-1])
-            else:
-                tmp=image.split('/')
-                image=os.path.join('/nvme/share/zhanghao/',tmp[-3],tmp[-2],tmp[-1])
+                image=os.path.join(DATA_PATA,tmp[-2]+'_{}_{}'.format(method,level),tmp[-1])
+            # else:
+            #     tmp=image.split('/')
+            #     image=os.path.join('/nvme/share/zhanghao/',tmp[-3],tmp[-2],tmp[-1])
             # print(image)
             images.append(image)
         # print(images,"pp")
