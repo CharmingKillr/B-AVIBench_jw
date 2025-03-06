@@ -13,7 +13,7 @@ from utils.tools import has_word, remove_special_chars
 from collections import defaultdict
 from .additive_noise import AdditiveGaussianNoiseAttack
 import pdb
-from .patch_attack import PatchAttack
+from .patch_attack import PatchAttack, PatchGradAttack
 import time
 import pdb
 from .evolutionary_attack import EvolutionaryAttack
@@ -212,7 +212,7 @@ class TestLLaVA15:
             attack=AdditiveGaussianNoiseAttack(model_att,task_name)
 
             start_time1 = time.time()
-            adversarial_ori_unpack_1=attack(image, label, task_name,epsilons=100, unpack=False, question_list=question_list[ind], chat_list=None, max_new_tokens=max_new_tokens,model_name=model_name,vis_proc=vis_proc)#100
+            adversarial_ori_unpack_1=attack(image, label, task_name,epsilons=20, unpack=False, question_list=question_list[ind], chat_list=None, max_new_tokens=max_new_tokens,model_name=model_name,vis_proc=vis_proc)#100
             adversarial_ori_1, total_prediction_calls_1 = adversarial_ori_unpack_1._Adversarial__best_adversarial, adversarial_ori_unpack_1._total_prediction_calls
             
             
@@ -246,6 +246,7 @@ class TestLLaVA15:
             if check_1 :   #允许攻击 patch attack                
                 start_time2 = time.time()
                 attacker = PatchAttack(model_att,task_name,label)
+                # 
                 patch_adversarial_1, patch_used_step=attacker.attack(image, label, adversarial_ori_1, int(return_1), mode='untargeted', question_list=question_list[ind], chat_list=None, max_new_tokens=max_new_tokens,model_name=model_name,vis_proc=vis_proc)
                 aux_dist[1].append(l2_distance(patch_adversarial_1, image))
 
@@ -301,10 +302,95 @@ class TestLLaVA15:
         batch_outputs = [aux_dist,index_attack,attack_success]
         return batch_outputs
 
+    @torch.no_grad()
+    def batch_grad_generate(self, image_list, question_list, max_new_tokens=256,method=None,level=0, gt_answer=None, task_name=None,
+                       save_dir='/data/jw/projects/B-AVIBench_jw/eval-data/transfer_perturbed_images',
+                       attack_params={}):
+        # 初始化攻击参数
+        params = {
+            'iterations': 50,
+            'lr': 0.1,
+            'topk_ratio': 0.3,
+            'image_layers': [12, 18, 23],  # 对应LLaVA视觉编码器层
+            'text_layers': [16, 24, 31],   # 对应LLaVA文本解码器层
+            'patch_size': 16
+        }
+        params.update(attack_params)
+
+        # 初始化模型组件
+        disable_torch_init()
+        model_name = "llava15"
+        
+        # 预处理图像和问题
+        images, prompts = [], []
+        for img_path, question in zip(image_list, question_list):
+            image = get_image(img_path)
+            # 构建对话模板
+            conv = self.conv.copy()
+            if getattr(self.model.config, 'mm_use_im_start_end', False):
+                question = f"{DEFAULT_IM_START_TOKEN}{DEFAULT_IMAGE_TOKEN}{DEFAULT_IM_END_TOKEN}\n{question}"
+            else:
+                question = f"{DEFAULT_IMAGE_TOKEN}\n{question}"
+            
+            conv.append_message(conv.roles[0], question)
+            conv.append_message(conv.roles[1], None)
+            prompts.append(conv.get_prompt())
+            images.append(image)
+        stop_str  = conv.sep if conv.sep_style != SeparatorStyle.TWO else conv.sep2
+        # 执行攻击
+        attack_results = []
+        for idx, (orig_img, prompt, label) in enumerate(zip(images, prompts, gt_answer)):
+            # 转换图像格式
+            orig_np = np.array(orig_img.resize((224, 224))).astype(np.float32)
+            
+            # 初始化攻击器
+            attacker = PatchGradAttack(
+                self.model,
+                task=task_name,
+                label=label,
+                image_layers=params['image_layers'],
+                text_layers=params['text_layers'],
+                patch_size=params['patch_size'],
+                topk_ratio=params['topk_ratio']
+            )
+            
+            # 执行攻击
+            adv_img, adv_dist = attacker.attack(
+                orig_np,
+                label,
+                iterations=params['iterations'],
+                lr=params['lr'],
+                question_list=prompt,
+                max_new_tokens=max_new_tokens,
+                model_name='llava15',
+                vis_proc=[stop_str, method, level]
+            )
+            
+            # 保存结果
+            os.makedirs(save_dir, exist_ok=True)
+            save_path = os.path.join(save_dir, f'adv_{idx}.png')
+            Image.fromarray(adv_img.astype(np.uint8)).save(save_path)
+            
+            attack_results.append({
+                'original': image_list[idx],
+                'adv_path': save_path,
+                'distance': adv_dist,
+                'success': adv_dist > 0
+            })
+
+        # 生成统计信息
+        success_rate = sum(r['success'] for r in attack_results) / len(attack_results)
+        avg_dist = sum(r['distance'] for r in attack_results) / len(attack_results)
+        
+        return {
+            'adv_images': [Image.open(r['adv_path']) for r in attack_results],
+            'metrics': {'success_rate': success_rate, 'avg_distance': avg_dist},
+            'details': attack_results
+        }
 
     @torch.no_grad()
     def do_generate(self, prompts, images, dtype=torch.float16, temperature=0, max_new_tokens=256, stop_str=None, keep_aspect_ratio=False,method=None, level=0,image_listnew=None):
-        if 1:            
+        if 1:    # PIL -> (1, 3, 336, 336)       
             images =process_images(images, self.image_processor, self.model.config).to(self.model.device, dtype=dtype)
             
         input_ids = [tokenizer_image_token(prompt, self.tokenizer, IMAGE_TOKEN_INDEX) for prompt in prompts]

@@ -15,7 +15,8 @@ def evaluate_VQA(
     time,
     batch_size=1,
     answer_path='./answers',
-    method=None, level=0
+    method=None, level=0,
+    grad_attacks=False
 ):
     predictions=[]
     attack_noise=[]
@@ -74,11 +75,20 @@ def evaluate_VQA(
     ###
     for batch in tqdm(dataloader, desc="Running inference"):  
         if dataset_name=="ImageNetVC_color" or dataset_name=="ImageNetVC_component" or dataset_name=="ImageNetVC_material" or dataset_name=="ImageNetVC_others" or dataset_name=="ImageNetVC_shape":
-            outputs = model.batch_generate(batch['image_path'], batch['question'],method=method, level=level,gt_answer=batch['gt_answers'],task_name="imagenetvc")
+            if grad_attacks:
+                outputs = model.batch_grad_generate(batch['image_path'], batch['question'],method=method, level=level,gt_answer=batch['gt_answers'],task_name="imagenetvc")
+            else:
+                outputs = model.batch_generate(batch['image_path'], batch['question'],method=method, level=level,gt_answer=batch['gt_answers'],task_name="imagenetvc")
         elif dataset_name=="ScienceQAIMG" or dataset_name=="IconQA" or dataset_name=="HatefulMemes" or dataset_name=="VSR":
-            outputs = model.batch_generate(batch['image_path'], batch['question'],method=method, level=level,gt_answer=batch['gt_answers'],task_name="vqachoice")
+            if grad_attacks:
+                outputs = model.batch_grad_generate(batch['image_path'], batch['question'],method=method, level=level, gt_answer=batch['gt_answers'],task_name="vqachoice")
+            else:
+                outputs = model.batch_generate(batch['image_path'], batch['question'],method=method, level=level,gt_answer=batch['gt_answers'],task_name="vqachoice")
         else:
-            outputs = model.batch_generate(batch['image_path'], batch['question'],method=method, level=level,gt_answer=batch['gt_answers'],task_name="vqa")
+            if grad_attacks:
+                outputs = model.batch_grad_generate(batch['image_path'], batch['question'],method=method, level=level, gt_answer=batch['gt_answers'],task_name="vqa")
+            else:
+                outputs = model.batch_generate(batch['image_path'], batch['question'],method=method, level=level,gt_answer=batch['gt_answers'],task_name="vqa")
         index_attack=index_attack+outputs[1]
         attack_success=attack_success+outputs[2]
         attack_noise=attack_noise+outputs[0][0]

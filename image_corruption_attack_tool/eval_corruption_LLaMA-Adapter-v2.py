@@ -33,7 +33,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description="Demo")
 
     # models
-    parser.add_argument("--model_name", type=str, default="PandaGPT")
+    parser.add_argument("--model_name", type=str, default="LLaMA-Adapter-v2")
     parser.add_argument("--device", type=int, default=4)
     parser.add_argument("--batch_size", type=int, default=8)
 

@@ -16,6 +16,7 @@ import pdb
 from .tools import VQAEval
 from models import llama_adapter_v2 as llama
 import imageio
+from collections import defaultdict
 ####
 def softmax(logits):
     """Transforms predictions into probability values.
@@ -437,4 +438,133 @@ class PatchAttack(Attacker):
         if mode == 'untargeted':
             return self.patch_attack(image, label, starting_point, iterations, min_, max_, mode='untargeted', question_list=question_list, chat_list=chat_list, max_new_tokens=max_new_tokens,model_name=model_name,vis_proc=vis_proc)
 
-       
+class PatchGradAttack(Attacker):
+    def __init__(self, model, task, label, 
+                image_layers=[12, 18, 23], 
+                text_layers=[16, 24, 31],
+                patch_size=16,
+                topk_ratio=0.3):
+        super().__init__(model, task, label)
+        
+        # 攻击参数配置
+        self.image_layers = image_layers
+        self.text_layers = text_layers
+        self.patch_size = patch_size
+        self.topk_ratio = topk_ratio
+        # 特征存储
+        self.image_features = defaultdict(list)
+        self.text_features = defaultdict(list)
+        
+        # 注册钩子
+        self._register_hooks()
+
+    def _register_hooks(self):
+        # 视觉编码器钩子
+        vision_encoder = self.model.model.vision_tower.vision_model.encoder
+        for idx in self.image_layers:
+            layer = vision_encoder.layers[idx]
+            layer.register_forward_hook(
+                lambda module, input, output, idx=idx: 
+                    self.image_features[idx].append(output[0].detach())
+            )
+
+        # 文本解码器钩子
+        text_decoder = self.model.model.language_model.model.layers
+        for idx in self.text_layers:
+            layer = text_decoder[idx]
+            layer.register_forward_hook(
+                lambda module, input, output, idx=idx: 
+                    self.text_features[idx].append(output[0].detach())
+            )
+
+    def _compute_feature_loss(self):
+        loss = 0
+        for img_layer in self.image_layers:
+            img_feat = torch.stack(self.image_features[img_layer]).mean(dim=(1,2))  # [B, D]
+            for txt_layer in self.text_layers:
+                txt_feat = torch.stack(self.text_features[txt_layer]).mean(dim=1)   # [B, D]
+                loss -= torch.cosine_similarity(img_feat, txt_feat, dim=-1).mean()
+        return loss
+
+    def _get_patch_importance(self, grad_map):
+        """基于梯度的patch重要性分析"""
+        grad_map = grad_map.sum(dim=1)  # 合并通道维度
+        h, w = grad_map.shape[-2:]
+        
+        ph = h // self.patch_size
+        pw = w // self.patch_size
+        
+        importance = torch.zeros((ph, pw), device=grad_map.device)
+        for i in range(ph):
+            for j in range(pw):
+                y_start = i * self.patch_size
+                y_end = (i+1) * self.patch_size
+                x_start = j * self.patch_size
+                x_end = (j+1) * self.patch_size
+                
+                importance[i,j] = grad_map[..., y_start:y_end, x_start:x_end].abs().mean()
+        return importance
+
+    def attack(self, image, label, iterations=100, lr=0.1, 
+              question_list=None, max_new_tokens=256, 
+              model_name=None, vis_proc=None):
+        # 初始化对抗样本
+        image_tensor = torch.from_numpy(image).permute(2,0,1).unsqueeze(0).float().cuda()
+        image_tensor.requires_grad_(True)
+        
+        best_adv = image.copy()
+        min_dist = float('inf')
+        
+        optimizer = torch.optim.Adam([image_tensor], lr=lr)
+        
+        for step in range(iterations):
+            self.image_features.clear()
+            self.text_features.clear()
+            
+            # 前向传播
+            outputs = self.model.generate(
+                inputs_embeds=None,
+                attention_mask=None,
+                images=image_tensor,
+                do_sample=False,
+                max_new_tokens=max_new_tokens,
+                output_hidden_states=True
+            )
+            
+            # 计算特征损失
+            loss = self._compute_feature_loss()
+            
+            # 反向传播
+            optimizer.zero_grad()
+            loss.backward()
+            
+            # 获取梯度
+            grad_map = image_tensor.grad.data.clone()
+            
+            # 分析patch重要性
+            importance_map = self._get_patch_importance(grad_map)
+            
+            # 选择topk重要区域
+            k = int(self.topk_ratio * importance_map.numel())
+            _, topk_indices = torch.topk(importance_map.view(-1), k)
+            
+            # 生成mask
+            mask = torch.zeros_like(importance_map)
+            mask.view(-1)[topk_indices] = 1
+            
+            # 更新对抗样本
+            with torch.no_grad():
+                delta = lr * grad_map.sign() * mask.unsqueeze(0).unsqueeze(0)
+                image_tensor.data = torch.clamp(image_tensor + delta, 0, 255)
+            
+            # 评估当前样本
+            current_adv = image_tensor.detach().squeeze().permute(1,2,0).cpu().numpy()
+            _, is_adv = self.predictions(current_adv, question_list, None, max_new_tokens, model_name, vis_proc)
+            
+            # 更新最佳样本
+            current_dist = l2_distance(current_adv, image)
+            if is_adv and current_dist < min_dist:
+                best_adv = current_adv
+                min_dist = current_dist
+                
+        return best_adv, min_dist       

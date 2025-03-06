@@ -43,7 +43,7 @@ class TestPandaGPT:
         args = {
             'model': 'openllama_peft',
             'imagebind_ckpt_path': '/seu_nvme/home/230239304/dataset/weights/PandaGPT/imagebind_ckpt',
-            'vicuna_ckpt_path': '/seu_nvme/home/230239304/huggingfacemodel/vicuna-7b-delta-v0',
+            'vicuna_ckpt_path': '/seu_nvme/home/230239304/huggingfacemodel/vicuna-7b-v0',
             'delta_ckpt_path': '/seu_nvme/home/230239304/dataset/weights/PandaGPT/pytorch_model.pt',
             'stage': 2,
             'max_tgt_len': 128,
