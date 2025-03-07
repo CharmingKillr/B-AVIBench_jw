@@ -362,7 +362,7 @@ class TestLLaVA15:
                 lr=params['lr'],
                 question_list=prompt,
                 max_new_tokens=max_new_tokens,
-                model_name='llava15',
+                model_name=model_name,
                 vis_proc=[stop_str, method, level]
             )
             

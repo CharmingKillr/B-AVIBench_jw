@@ -446,48 +446,194 @@ class PatchGradAttack(Attacker):
                 topk_ratio=0.3):
         super().__init__(model, task, label)
         
+        # 获取模型原始图像尺寸配置
+        self.original_image_size = self.model.model.vision_tower.config.image_size
+        # 计算所需尺寸
+        self.required_size = self._calculate_required_size()
+
         # 攻击参数配置
         self.image_layers = image_layers
         self.text_layers = text_layers
         self.patch_size = patch_size
         self.topk_ratio = topk_ratio
-        # 特征存储
+        self.device = next(model.parameters()).device
+        
+        # 特征存储（使用CPU防止显存溢出）
         self.image_features = defaultdict(list)
         self.text_features = defaultdict(list)
         
+        # 模型结构验证
+        self._validate_model_structure()
         # 注册钩子
         self._register_hooks()
-
+    def _validate_model_structure(self):
+        """验证关键模型组件是否存在"""
+        # 视觉编码路径验证
+        if not hasattr(self.model.model, 'vision_tower'):
+            raise AttributeError("模型缺少vision_tower属性")
+        if not hasattr(self.model.model.vision_tower, 'vision_tower'):
+            raise AttributeError("CLIPVisionTower缺少vision_tower属性")
+        
+        # 文本解码路径验证
+        if not hasattr(self.model.model, 'layers'):
+            raise AttributeError("模型缺少layers属性(LlamaDecoderLayer)")
+            
+        # 层索引范围验证
+        vision_encoder = self.model.model.vision_tower.vision_tower.vision_model.encoder
+        if max(self.image_layers) >= len(vision_encoder.layers):
+            raise ValueError(f"视觉层索引越界，最大允许值：{len(vision_encoder.layers)-1}")
+            
+        if max(self.text_layers) >= len(self.model.model.layers):
+            raise ValueError(f"文本层索引越界，最大允许值：{len(self.model.model.layers)-1}")
+        
+    def _calculate_required_size(self):
+        """根据位置嵌入计算所需输入尺寸"""
+        num_positions = self.model.model.vision_tower.config.num_positions  # 577
+        patch_size = self.model.model.vision_tower.config.patch_size  # 14
+        num_patches = num_positions - 1  # 576
+        grid_size = int(num_patches ** 0.5)  # 24
+        return grid_size * patch_size  # 24 * 14=336
+    
     def _register_hooks(self):
+        """注册前向钩子（修复闭包问题）"""
         # 视觉编码器钩子
-        vision_encoder = self.model.model.vision_tower.vision_model.encoder
-        for idx in self.image_layers:
-            layer = vision_encoder.layers[idx]
-            layer.register_forward_hook(
-                lambda module, input, output, idx=idx: 
-                    self.image_features[idx].append(output[0].detach())
-            )
+        vision_encoder = self.model.model.vision_tower.vision_tower.vision_model.encoder
+        
+        def make_vision_hook(idx):
+            def hook(module, inputs, outputs):
+                # 处理可能的元组输出
+                feat = outputs[0] if isinstance(outputs, tuple) else outputs
+                self.image_features[idx].append(feat.detach().cpu())
+            return hook
+        
+        for layer_idx in self.image_layers:
+            vision_encoder.layers[layer_idx].register_forward_hook(make_vision_hook(layer_idx))
 
         # 文本解码器钩子
-        text_decoder = self.model.model.language_model.model.layers
-        for idx in self.text_layers:
-            layer = text_decoder[idx]
-            layer.register_forward_hook(
-                lambda module, input, output, idx=idx: 
-                    self.text_features[idx].append(output[0].detach())
-            )
+        text_decoder = self.model.model.layers
+        
+        def make_text_hook(idx):
+            def hook(module, inputs, outputs):
+                # Llama输出格式：(hidden_states, attentions)
+                self.text_features[idx].append(outputs[0].detach().cpu())
+            return hook
+        
+        for layer_idx in self.text_layers:
+            text_decoder[layer_idx].register_forward_hook(make_text_hook(layer_idx))
+
+    def _reset_features(self):
+        """清空特征缓存"""
+        self.image_features.clear()
+        self.text_features.clear()
+
+    def _compute_feature_loss(self):
+        """计算特征对齐损失（增强鲁棒性版本）"""
+        total_loss = 0.0
+        valid_pairs = 0
+        
+        for img_layer in self.image_layers:
+            img_feats = self.image_features.get(img_layer, [])
+            if not img_feats:
+                continue
+                
+            # 合并所有批次的特征 [steps, B, seq_len, D] -> [B*steps, D]
+            img_feat = torch.cat([f.view(-1, f.size(-1)) for f in img_feats], dim=0)
+            
+            for txt_layer in self.text_layers:
+                txt_feats = self.text_features.get(txt_layer, [])
+                if not txt_feats:
+                    continue
+                
+                # 文本特征处理 [steps, B, seq_len, D] -> [B*steps, D]
+                txt_feat = torch.cat([f.view(-1, f.size(-1)) for f in txt_feats], dim=0)
+                
+                # 维度对齐
+                min_len = min(img_feat.size(0), txt_feat.size(0))
+                img_feat = img_feat[:min_len]
+                txt_feat = txt_feat[:min_len]
+                
+                # 计算余弦相似度
+                sim = torch.cosine_similarity(img_feat, txt_feat, dim=-1).mean()
+                total_loss -= sim  # 最大化相似度即最小化负相似度
+                valid_pairs += 1
+                
+        return total_loss / valid_pairs if valid_pairs > 0 else torch.tensor(0.0)
+
+    def print_feature_stats(self):
+        """特征统计（调试用）"""
+        print("\n=== 特征收集状态 ===")
+        # 视觉特征
+        print("视觉层:")
+        for layer in self.image_layers:
+            feats = self.image_features.get(layer, [])
+            print(f"层 {layer}: {len(feats)} 特征")
+            if feats:
+                print(f"  形状示例: {feats[0].shape}")
+        
+        # 文本特征
+        print("\n文本层:")
+        for layer in self.text_layers:
+            feats = self.text_features.get(layer, [])
+            print(f"层 {layer}: {len(feats)} 特征")
+            if feats:
+                print(f"  形状示例: {feats[0].shape}")
 
     def _compute_feature_loss(self):
         loss = 0
-        for img_layer in self.image_layers:
-            img_feat = torch.stack(self.image_features[img_layer]).mean(dim=(1,2))  # [B, D]
-            for txt_layer in self.text_layers:
-                txt_feat = torch.stack(self.text_features[txt_layer]).mean(dim=1)   # [B, D]
-                loss -= torch.cosine_similarity(img_feat, txt_feat, dim=-1).mean()
-        return loss
+        valid_pairs = 0  # 记录有效特征对数量
+        
+        for img_layer in self.img_layers:  # 修正变量名统一性（原image_layers应为img_layers）
+            # 检查图像特征有效性
+            if not self.image_features.get(img_layer) or len(self.image_features[img_layer]) == 0:
+                print(f"[Warn] 图像层 {img_layer} 无特征，跳过计算")
+                continue
+                
+            try:
+                img_feat = torch.stack(self.image_features[img_layer]).mean(dim=(1,2))  # [B, D]
+            except RuntimeError as e:
+                print(f"图像层 {img_layer} 特征异常:")
+                print(f"特征数量: {len(self.image_features[img_layer])}")
+                print(f"首个特征形状: {self.image_features[img_layer][0].shape if self.image_features[img_layer] else '空'}")
+                raise e
+
+            for txt_layer in self.txt_layers:
+                # 检查文本特征有效性
+                if not self.text_features.get(txt_layer) or len(self.text_features[txt_layer]) == 0:
+                    print(f"[Warn] 文本层 {txt_layer} 无特征，跳过配对 (img_layer={img_layer}, txt_layer={txt_layer})")
+                    continue
+                    
+                try:
+                    txt_feat = torch.stack(self.text_features[txt_layer]).mean(dim=1)  # [B, D]
+                except RuntimeError as e:
+                    print(f"文本层 {txt_layer} 特征异常:")
+                    print(f"特征数量: {len(self.text_features[txt_layer])}")
+                    print(f"首个特征形状: {self.text_features[txt_layer][0].shape if self.text_features[txt_layer] else '空'}")
+                    raise e
+
+                # 维度对齐检查
+                if img_feat.shape[0] != txt_feat.shape[0]:
+                    print(f"批次不匹配: img_feat {img_feat.shape}, txt_feat {txt_feat.shape}")
+                    continue
+
+                # 设备一致性检查
+                if img_feat.device != txt_feat.device:
+                    print(f"设备不一致: img_feat在 {img_feat.device}, txt_feat在 {txt_feat.device}")
+                    txt_feat = txt_feat.to(img_feat.device)
+
+                # 计算相似度
+                sim = torch.cosine_similarity(img_feat, txt_feat, dim=-1).mean()
+                loss -= sim
+                valid_pairs += 1
+
+        # 归一化处理
+        if valid_pairs > 0:
+            return loss / valid_pairs  # 平均损失
+        else:
+            print("[Error] 所有特征对均无效，返回零损失")
+            return torch.tensor(0.0, device=self.device)
 
     def _get_patch_importance(self, grad_map):
-        """基于梯度的patch重要性分析"""
+        """基于梯度的patch重要性分析(保留原始逻辑)"""
         grad_map = grad_map.sum(dim=1)  # 合并通道维度
         h, w = grad_map.shape[-2:]
         
@@ -508,28 +654,24 @@ class PatchGradAttack(Attacker):
     def attack(self, image, label, iterations=100, lr=0.1, 
               question_list=None, max_new_tokens=256, 
               model_name=None, vis_proc=None):
-        # 初始化对抗样本
-        image_tensor = torch.from_numpy(image).permute(2,0,1).unsqueeze(0).float().cuda()
+        """完整攻击流程（保留原始优化逻辑）"""
+        # 初始化对抗样本 image (224,224,3) -> tensor (1,3,224,224)
+        image_tensor = torch.from_numpy(image).permute(2,0,1).unsqueeze(0).float().to(self.device)
         image_tensor.requires_grad_(True)
         
         best_adv = image.copy()
         min_dist = float('inf')
-        
         optimizer = torch.optim.Adam([image_tensor], lr=lr)
         
         for step in range(iterations):
-            self.image_features.clear()
-            self.text_features.clear()
+            self._reset_features()
             
-            # 前向传播
-            outputs = self.model.generate(
-                inputs_embeds=None,
-                attention_mask=None,
-                images=image_tensor,
-                do_sample=False,
-                max_new_tokens=max_new_tokens,
-                output_hidden_states=True
-            )
+            # 前向传播（触发钩子）
+            with torch.no_grad():
+                # 显式调用视觉编码器
+                _ = self.model.model.vision_tower(image_tensor)
+                # 显式调用文本解码器
+                _ = self.model.model(input_ids=torch.tensor([[1]]).to(self.device))  # 使用虚拟输入
             
             # 计算特征损失
             loss = self._compute_feature_loss()
@@ -538,26 +680,23 @@ class PatchGradAttack(Attacker):
             optimizer.zero_grad()
             loss.backward()
             
-            # 获取梯度
+            # 获取梯度并计算重要性
             grad_map = image_tensor.grad.data.clone()
-            
-            # 分析patch重要性
             importance_map = self._get_patch_importance(grad_map)
             
             # 选择topk重要区域
             k = int(self.topk_ratio * importance_map.numel())
             _, topk_indices = torch.topk(importance_map.view(-1), k)
             
-            # 生成mask
+            # 生成mask并更新
             mask = torch.zeros_like(importance_map)
             mask.view(-1)[topk_indices] = 1
             
-            # 更新对抗样本
             with torch.no_grad():
                 delta = lr * grad_map.sign() * mask.unsqueeze(0).unsqueeze(0)
                 image_tensor.data = torch.clamp(image_tensor + delta, 0, 255)
             
-            # 评估当前样本
+            # 评估对抗样本
             current_adv = image_tensor.detach().squeeze().permute(1,2,0).cpu().numpy()
             _, is_adv = self.predictions(current_adv, question_list, None, max_new_tokens, model_name, vis_proc)
             
@@ -567,4 +706,5 @@ class PatchGradAttack(Attacker):
                 best_adv = current_adv
                 min_dist = current_dist
                 
-        return best_adv, min_dist       
+        return best_adv, min_dist
+       
