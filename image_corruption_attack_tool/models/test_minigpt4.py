@@ -11,7 +11,7 @@ import os
 from . import get_image, DATA_DIR
 
 
-CFG_PATH = '/data/jw/projects/B-AVIBench_jw/image_corruption_attack_tool/models/minigpt4/minigpt4_eval.yaml'
+CFG_PATH = '/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/image_corruption_attack_tool/models/minigpt4/minigpt4_eval.yaml'
 
 
 class TestMiniGPT4:
@@ -61,11 +61,11 @@ class TestMiniGPT4:
         for image in image_list:
             if method is not None and level!=0:
                 if level == 1:
-                    DATA_PATA = '/data/jw/projects/B-AVIBench_jw/eval-data/corruption/lvlm_tiny_corruption_1'
+                    DATA_PATA = '/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/eval-data/corruption/lvlm_tiny_corruption_1'
                 elif level == 3:
-                    DATA_PATA = '/data/jw/projects/B-AVIBench_jw/eval-data/corruption/lvlm_tiny_corruption_3'
+                    DATA_PATA = '/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/eval-data/corruption/lvlm_tiny_corruption_3'
                 elif level == 5:
-                    DATA_PATA = '/data/jw/projects/B-AVIBench_jw/eval-data/corruption/lvlm_tiny_corruption_5'
+                    DATA_PATA = '/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/eval-data/corruption/lvlm_tiny_corruption_5'
                 tmp=image.split('/')
                 image=os.path.join(DATA_PATA,tmp[-2]+'_{}_{}'.format(method,level),tmp[-1])
             images.append(image)

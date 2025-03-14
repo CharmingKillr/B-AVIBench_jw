@@ -545,7 +545,7 @@ class OtterModel(OtterPreTrainedModel):
     ):
         super().__init__(config)
         text_tokenizer = LlamaTokenizer.from_pretrained(
-            '/data/jw/huggingfacemodel/llama-7b-hf'
+            '/seu_nvme/home/230239304/huggingfacemodel/llama-7b-hf'
         )
         lang_encoder = LlamaForCausalLM(config=config.text_config)
         vision_encoder = CLIPVisionModel(config=config.vision_config)
@@ -715,7 +715,7 @@ class OtterForConditionalGeneration(OtterPreTrainedModel):
     ):
         super().__init__(config)
         text_tokenizer = LlamaTokenizer.from_pretrained(
-            '/data/jw/huggingfacemodel/llama-7b-hf'
+            '/seu_nvme/home/230239304/huggingfacemodel/llama-7b-hf'
         )
         lang_encoder = LlamaForCausalLM(config=config.text_config)
         vision_encoder = CLIPVisionModel(config=config.vision_config)

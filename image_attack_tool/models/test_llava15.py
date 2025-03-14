@@ -13,7 +13,7 @@ from utils.tools import has_word, remove_special_chars
 from collections import defaultdict
 from .additive_noise import AdditiveGaussianNoiseAttack
 import pdb
-from .patch_attack import PatchAttack, PatchGradAttack
+from .patch_attack import PatchAttack, PatchGradAttack, MMProjectorAttack
 import time
 import pdb
 from .evolutionary_attack import EvolutionaryAttack
@@ -145,7 +145,6 @@ class TestLLaVA15:
         self.conv = conv_templates['vicuna_v1'] #get_conv(model_name)
         self.image_process_mode = "Resize" # Crop, Resize, Pad
         self.dtype = torch.float16
-
 
     
     @torch.no_grad()
@@ -304,23 +303,20 @@ class TestLLaVA15:
 
     @torch.no_grad()
     def batch_grad_generate(self, image_list, question_list, max_new_tokens=256,method=None,level=0, gt_answer=None, task_name=None,
-                       save_dir='/data/jw/projects/B-AVIBench_jw/eval-data/transfer_perturbed_images',
+                       save_dir='/data/jw/projects/B-AVIBench_jw/eval-data/transfer_grad_perturbed_images',
                        attack_params={}):
         # 初始化攻击参数
         params = {
             'iterations': 50,
             'lr': 0.1,
+            'momentum': 0.9,
             'topk_ratio': 0.3,
             'image_layers': [12, 18, 23],  # 对应LLaVA视觉编码器层
             'text_layers': [16, 24, 31],   # 对应LLaVA文本解码器层
             'patch_size': 16
         }
         params.update(attack_params)
-
-        # 初始化模型组件
-        disable_torch_init()
         model_name = "llava15"
-        
         # 预处理图像和问题
         images, prompts = [], []
         for img_path, question in zip(image_list, question_list):
@@ -340,53 +336,174 @@ class TestLLaVA15:
         # 执行攻击
         attack_results = []
         for idx, (orig_img, prompt, label) in enumerate(zip(images, prompts, gt_answer)):
-            # 转换图像格式
-            orig_np = np.array(orig_img.resize((224, 224))).astype(np.float32)
-            
-            # 初始化攻击器
-            attacker = PatchGradAttack(
-                self.model,
-                task=task_name,
-                label=label,
-                image_layers=params['image_layers'],
-                text_layers=params['text_layers'],
-                patch_size=params['patch_size'],
-                topk_ratio=params['topk_ratio']
-            )
-            
-            # 执行攻击
-            adv_img, adv_dist = attacker.attack(
-                orig_np,
-                label,
-                iterations=params['iterations'],
-                lr=params['lr'],
-                question_list=prompt,
-                max_new_tokens=max_new_tokens,
-                model_name=model_name,
-                vis_proc=[stop_str, method, level]
-            )
-            
-            # 保存结果
-            os.makedirs(save_dir, exist_ok=True)
-            save_path = os.path.join(save_dir, f'adv_{idx}.png')
-            Image.fromarray(adv_img.astype(np.uint8)).save(save_path)
-            
-            attack_results.append({
-                'original': image_list[idx],
-                'adv_path': save_path,
-                'distance': adv_dist,
-                'success': adv_dist > 0
-            })
-
-        # 生成统计信息
-        success_rate = sum(r['success'] for r in attack_results) / len(attack_results)
-        avg_dist = sum(r['distance'] for r in attack_results) / len(attack_results)
+            try:
+                # 转换图像格式
+                orig_np = np.array(orig_img.resize((336, 336))).astype(np.float32)
+                
+                # 初始化攻击器
+                attacker = PatchGradAttack(
+                    self.model,
+                    task=task_name,
+                    label=label,
+                    tokenizer=self.tokenizer,
+                    **{k: v for k, v in params.items() 
+                    if k in ['image_layers', 'text_layers', 'patch_size', 'topk_ratio']}
+                )
+                
+                # 执行攻击
+                adv_img, adv_dist = attacker.attack(
+                    orig_np,
+                    label,
+                    iterations=params['iterations'],
+                    lr=params['lr'],
+                    momentum=params['momentum'],
+                    question_list=question,
+                    max_new_tokens=max_new_tokens,
+                    model_name="llava15",
+                    vis_proc=[self.conv.sep, method, level]
+                )
+                # 保存结果
+                save_path = os.path.join(save_dir, f'adv_{os.path.basename(img_path)}')
+                Image.fromarray(adv_img).save(save_path)
+                
+                attack_results.append({
+                    'original': img_path,
+                    'adv_path': save_path,
+                    'distance': adv_dist,
+                    'success': adv_dist > 0
+                })
+            except Exception as e:
+                print(f"处理 {img_path} 时出错: {str(e)}")
+                attack_results.append({
+                    'original': img_path,
+                    'error': str(e)
+                })
+        # 生成统计报告
+        success_results = [r for r in attack_results if 'success' in r and r['success']]
+        stats = {
+            'success_rate': len(success_results)/len(attack_results) if attack_results else 0,
+            'avg_distance': sum(r['distance'] for r in success_results)/len(success_results) if success_results else 0,
+            'total_samples': len(attack_results),
+            'failed_samples': len(attack_results) - len(success_results)
+        }
         
         return {
-            'adv_images': [Image.open(r['adv_path']) for r in attack_results],
-            'metrics': {'success_rate': success_rate, 'avg_distance': avg_dist},
+            'adv_images': [Image.open(r['adv_path']) for r in attack_results if 'adv_path' in r],
+            'statistics': stats,
             'details': attack_results
         }
+
+    @torch.no_grad()
+    def mm_projector_attack(self, image_list, question_list, max_new_tokens=256, method=None, level=0, gt_answer=None, task_name=None,
+                       save_dir='/data/jw/projects/B-AVIBench_jw/eval-data/transfer_projector_perturbed_images', attack_params={}):
+        """基于mm_projector的跨模态对抗攻击"""
+        # 初始化攻击参数
+        params = {
+            'iterations': 100,  # 默认迭代次数
+            'lr': 0.2,         # 初始学习率
+            'momentum': 0.9,   # 动量系数
+            'projector_layers': ['model.model.mm_projector.0', 'model.model.mm_projector.2'],  # 投影层路径
+            'alpha': 0.5       # 相似度损失权重
+        }
+        params.update(attack_params)
+        model_name = "llava15"
+        # 预处理图像和问题
+        images, prompts = [], []
+        for img_path, question in zip(image_list, question_list):
+            image = get_image(img_path)
+            # 构建对话模板
+            conv = self.conv.copy()
+            if getattr(self.model.config, 'mm_use_im_start_end', False):
+                question = f"{DEFAULT_IM_START_TOKEN}{DEFAULT_IMAGE_TOKEN}{DEFAULT_IM_END_TOKEN}\n{question}"
+            else:
+                question = f"{DEFAULT_IMAGE_TOKEN}\n{question}"
+            
+            conv.append_message(conv.roles[0], question)
+            conv.append_message(conv.roles[1], None)
+            prompts.append(conv.get_prompt())
+            images.append(image)
+        stop_str  = conv.sep if conv.sep_style != SeparatorStyle.TWO else conv.sep2
+        # 创建保存目录
+        os.makedirs(save_dir, exist_ok=True)
+        
+        attack_results = []
+        for img_path, question, target_text in zip(image_list, question_list, target_texts):
+            try:
+                # 加载并预处理图像
+                orig_img = Image.open(img_path).convert('RGB')
+                orig_np = np.array(orig_img.resize((336, 336))).astype(np.float32)
+                
+                # 初始化投影层攻击器
+                attacker = MMProjectorAttack(
+                    model=self.model,
+                    task="vqa",
+                    label=target_text,
+                    tokenizer=self.tokenizer,
+                    projector_layers=params['projector_layers'],
+                    device='cuda'
+                )
+                
+                # 执行对抗攻击
+                start_time = time.time()
+                adv_img = attacker.attack(
+                    image=orig_np,
+                    target_text=target_text,
+                    iterations=params['iterations'],
+                    lr=params['lr'],
+                    momentum=params['momentum']
+                )
+                time_cost = time.time() - start_time
+                
+                # 保存对抗样本
+                save_path = os.path.join(save_dir, f'adv_{os.path.basename(img_path)}')
+                Image.fromarray(adv_img).save(save_path)
+                
+                # 验证攻击效果
+                final_pred, is_adv = attacker.predictions(
+                    adv_img, 
+                    question=question,
+                    max_new_tokens=max_new_tokens,
+                    model_name="llava15",
+                    vis_proc=[stop_str, method, level]
+                )
+                
+                # 计算指标
+                success = not has_word(final_pred.lower(), target_text.lower())
+                dist = l2_distance(adv_img, orig_np)
+                
+                attack_results.append({
+                    'original': img_path,
+                    'adv_path': save_path,
+                    'success': success,
+                    'distance': dist,
+                    'time': time_cost,
+                    'prediction': final_pred,
+                    'target': target_text
+                })
+                
+            except Exception as e:
+                print(f"投影层攻击失败: {img_path} - {str(e)}")
+                attack_results.append({
+                    'original': img_path,
+                    'error': str(e)
+                })
+        
+        # 生成统计报告
+        success_results = [r for r in attack_results if r.get('success', False)]
+        stats = {
+            'success_rate': len(success_results)/len(attack_results) if attack_results else 0,
+            'avg_distance': sum(r['distance'] for r in success_results)/len(success_results) if success_results else 0,
+            'avg_time': sum(r['time'] for r in success_results)/len(success_results) if success_results else 0,
+            'total_samples': len(attack_results),
+            'failed_samples': len(attack_results) - len(success_results)
+        }
+        
+        return {
+            'adv_images': [Image.open(r['adv_path']) for r in attack_results if 'adv_path' in r],
+            'statistics': stats,
+            'details': attack_results
+        }
+
 
     @torch.no_grad()
     def do_generate(self, prompts, images, dtype=torch.float16, temperature=0, max_new_tokens=256, stop_str=None, keep_aspect_ratio=False,method=None, level=0,image_listnew=None):

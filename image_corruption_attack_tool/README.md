@@ -17,6 +17,9 @@ sh image_corruption.sh $PARTITION $JOB_NAME $model_name $batch_size $dataset_nam
 # sh image_corruption.sh gvembodied test_corrup moellava 16  MSCOCO_MCI,VCR1_MCI,MSCOCO_OC,VCR1_OC
 # sh image_corruption.sh gvembodied test_corrup moellava 16  MSCOCO_pope_random,MSCOCO_pope_adversarial,MSCOCO_pope_popular
 ```
+args.dataset_name = ['ImageNetVC_color','ImageNetVC_component','ImageNetVC_material','ImageNetVC_others','ImageNetVC_shape','MSCOCO_MCI','VCR1_MCI','MSCOCO_OC','VCR1_OC','FUNSD','POIE','SROIE',
+                         'COCO-Text','CTW','CUTE80','HOST','IC13','IC15','IIIT5K','SVTP','SVT','NoCaps','Flickr','MSCOCO_caption_karpathy','WHOOPSCaption','AOKVQAClose','AOKVQAOpen','DocVQA','GQA',
+                         'OCRVQA','OKVQA','STVQA','TextVQA','WHOOPSVQA','WHOOPSWeird','Visdial','IconQA','VSR','ScienceQAIMG','VizWiz','MSCOCO_pope_random','MSCOCO_pope_adversarial','MSCOCO_pope_popular','CIFAR10','CIFAR100','Flowers102','ImageNet','OxfordIIITPet','Total-Text','WOST','WordArt']
 
 **model_name**: BLIP2; MiniGPT-4; mPLUG-Owl; Otter; Otter-Image; InstructBLIP; VPGTrans; LLaVA; sharegpt4v; moellava; LLaVA15; LLaMA-Adapter-v2; internlm-xcomposer; PandaGPT; OFv2.
 

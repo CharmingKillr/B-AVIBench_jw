@@ -5,11 +5,11 @@
     "use_media_placement_augmentation": true,
     "only_attend_previous": true,
     "text_config": {
-        "_name_or_path": "luodian/llama-7b-hf",
+        "_name_or_path": "/seu_nvme/home/230239304/huggingfacemodel/llama-7b-hf",
         "model_type": "llama"
     },
     "vision_config": {
-        "_name_or_path": "openai/clip-vit-large-patch14",
+        "_name_or_path": "/seu_nvme/home/230239304/huggingfacemodel/clip-vit-large-patch14",
         "model_type": "clip_vision_model",
         "hidden_size": 1024,
         "intermediate_size": 4096,

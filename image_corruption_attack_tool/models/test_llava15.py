@@ -121,7 +121,7 @@ def load_model(model_path, model_name, dtype=torch.float16, device='cpu'):
 
 class TestLLaVA15:
     def __init__(self, device=None):
-        model_path="/data/jw/huggingfacemodel/llava-v1.5-7b"
+        model_path="/seu_nvme/home/230239304/huggingfacemodel/llava-v1.5-7b"
         # model_name = get_model_name(model_path)
         model_name = get_model_name_from_path(model_path)
         # print(model_name)

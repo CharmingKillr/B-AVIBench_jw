@@ -1,5 +1,4 @@
 import pandas as pd
-import pandas as pd
 import json
 import pdb
 import re
@@ -13,7 +12,7 @@ value_lengths = []
 
 blip_zhibiao=[]
 InstructBLIP_zhibiao=[]
-LLaMA_Adapter_v2_zhibiao=[]
+#LLaMA_Adapter_v2_zhibiao=[]
 LLaVA_zhibiao=[]
 MiniGPT_zhibiao=[]
 mPLUG_zhibiao=[]
@@ -44,8 +43,8 @@ for neng in nengli:
     youxiao_num_InstructBLIP=0 #2
     heji_InstructBLIP=0
 
-    youxiao_num_LLaAdapterv2=0 #3
-    heji_LLaAdapterv2=0
+    # youxiao_num_LLaAdapterv2=0 #3
+    # heji_LLaAdapterv2=0
 
     youxiao_num_LLaVA=0 #4
     heji_LLaVA=0
@@ -83,38 +82,38 @@ for neng in nengli:
 
 
     for ren in renwu:
-        with open('BLIP2_ff/{}/result.json'.format(ren), 'r') as file:
+        with open('/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/result_process_re/BLIP2_ff/{}/result.json'.format(ren), 'r') as file:
             data_BLIP2 = json.load(file)
-        with open('InstructBLIP_ff/{}/result.json'.format(ren), 'r') as file:
+        with open('/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/result_process_re/InstructBLIP_ff/{}/result.json'.format(ren), 'r') as file:
             data_InstructBLIP = json.load(file)
-        with open('LLaMA-Adapter-v2_ff/{}/result.json'.format(ren), 'r') as file:
-            data_LLaMA_Adapter_v2 = json.load(file)
+        # with open('LLaMA-Adapter-v2_ff/{}/result.json'.format(ren), 'r') as file:
+        #     data_LLaMA_Adapter_v2 = json.load(file)
 
-        with open('LLaVA_ff/{}/result.json'.format(ren), 'r') as file:
+        with open('/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/result_process_re/LLaVA_ff/{}/result.json'.format(ren), 'r') as file:
             data_LLaVA = json.load(file)
-        with open('MiniGPT-4_ff/{}/result.json'.format(ren), 'r') as file:
+        with open('/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/result_process_re/MiniGPT-4_ff/{}/result.json'.format(ren), 'r') as file:
             data_MiniGPT = json.load(file)
-        with open('mPLUG-Owl_ff/{}/result.json'.format(ren), 'r') as file:
+        with open('/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/result_process_re/mPLUG-Owl_ff/{}/result.json'.format(ren), 'r') as file:
             data_mPLUG = json.load(file)
 
-        with open('Otter_ff/{}/result.json'.format(ren), 'r') as file:
+        with open('/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/result_process_re/Otter_ff/{}/result.json'.format(ren), 'r') as file:
             data_Otter = json.load(file)
-        with open('PandaGPT_ff/{}/result.json'.format(ren), 'r') as file:
+        with open('/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/result_process_re/PandaGPT_ff/{}/result.json'.format(ren), 'r') as file:
             data_PandaGPT = json.load(file)
-        with open('VPGTrans_ff/{}/result.json'.format(ren), 'r') as file:
+        with open('/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/result_process_re/VPGTrans_ff/{}/result.json'.format(ren), 'r') as file:
             data_VPGTrans = json.load(file)
 
-        with open('OFv2_ff/{}/result.json'.format(ren), 'r') as file:
+        with open('/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/result_process_re/OFv2_ff/{}/result.json'.format(ren), 'r') as file:
             data_OFv2 = json.load(file)
-        with open('internlm-xcomposer_ff/{}/result.json'.format(ren), 'r') as file:
+        with open('/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/result_process_re/internlm-xcomposer_ff/{}/result.json'.format(ren), 'r') as file:
             data_xcomposer = json.load(file)
-        with open('LLaVA15_ff/{}/result.json'.format(ren), 'r') as file:
+        with open('/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/result_process_re/LLaVA15_ff/{}/result.json'.format(ren), 'r') as file:
             data_LLaVA15 = json.load(file)
         
-        with open('moellava_ff/{}/result.json'.format(ren), 'r') as file:
+        with open('/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/result_process_re/moellava_ff/{}/result.json'.format(ren), 'r') as file:
             data_moe = json.load(file)
 
-        with open('sharegpt4v_ff/{}/result.json'.format(ren), 'r') as file:
+        with open('/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/result_process_re/sharegpt4v_ff/{}/result.json'.format(ren), 'r') as file:
             data_share= json.load(file)        
 
         mean3=0
@@ -262,70 +261,70 @@ for neng in nengli:
                 mean5=0 
 
         ####33    
-        mean3=0
-        mean5=0  
-        for index, (key, value) in enumerate(data_LLaMA_Adapter_v2.items()):
-            level=int(key.split("_")[-1])
-            if ren == 'CLS':
-                if level==0:
-                    init = value['mean_per_class_acc']
-                else:
-                    if init!=0:
-                        if level==3 or level==5 or level==1:
-                            mean3+= (init-value['mean_per_class_acc'])/init
-                            mean5+= (init-value['mean_per_class_acc'])/init
-                        else:
-                            mean5+= (init-value['mean_per_class_acc'])/init 
-                        youxiao_num_LLaAdapterv2=youxiao_num_LLaAdapterv2+1
-                        heji_LLaAdapterv2=heji_LLaAdapterv2+mean3
-                    else:
-                        mean3='none'
-                        mean5='none'
-                        youxiao_num_LLaAdapterv2=youxiao_num_LLaAdapterv2+0
-                        heji_LLaAdapterv2=heji_LLaAdapterv2+0   
+        # mean3=0
+        # mean5=0  
+        # for index, (key, value) in enumerate(data_LLaMA_Adapter_v2.items()):
+        #     level=int(key.split("_")[-1])
+        #     if ren == 'CLS':
+        #         if level==0:
+        #             init = value['mean_per_class_acc']
+        #         else:
+        #             if init!=0:
+        #                 if level==3 or level==5 or level==1:
+        #                     mean3+= (init-value['mean_per_class_acc'])/init
+        #                     mean5+= (init-value['mean_per_class_acc'])/init
+        #                 else:
+        #                     mean5+= (init-value['mean_per_class_acc'])/init 
+        #                 youxiao_num_LLaAdapterv2=youxiao_num_LLaAdapterv2+1
+        #                 heji_LLaAdapterv2=heji_LLaAdapterv2+mean3
+        #             else:
+        #                 mean3='none'
+        #                 mean5='none'
+        #                 youxiao_num_LLaAdapterv2=youxiao_num_LLaAdapterv2+0
+        #                 heji_LLaAdapterv2=heji_LLaAdapterv2+0   
                 
-            elif ren=="KIE":
-                f1_value = float(re.search(r"F1: (\d+\.\d+)", value).group(1))
-                if level==0:
-                    init = f1_value
-                else:
-                    if init!=0:
-                        if level==3 or level==5 or level==1:
-                            mean3+= (init-f1_value)/init
-                            mean5+= (init-f1_value)/init
-                        else:
-                            mean5+= (init-f1_value)/init
-                        youxiao_num_LLaAdapterv2=youxiao_num_LLaAdapterv2+1
-                        heji_LLaAdapterv2=heji_LLaAdapterv2+mean3
-                    else:
-                        mean3='none'
-                        mean5='none'
-                        youxiao_num_LLaAdapterv2=youxiao_num_LLaAdapterv2+0
-                        heji_LLaAdapterv2=heji_LLaAdapterv2+0
-            else:
-                if level==0:
-                    init = value
-                else:
-                    if init!=0:
-                        if level==3 or level==5 or level==1:
-                            mean3+= (init-value)/init
-                            mean5+= (init-value)/init
-                        else:
-                            mean5+= (init-value)/init
-                        youxiao_num_LLaAdapterv2=youxiao_num_LLaAdapterv2+1
-                        heji_LLaAdapterv2=heji_LLaAdapterv2+mean3
-                    else:
-                        mean3='none'
-                        mean5='none'
-                        youxiao_num_LLaAdapterv2=youxiao_num_LLaAdapterv2+0
-                        heji_LLaAdapterv2=heji_LLaAdapterv2+0
-            if level==5:
-                if isinstance(mean3, str):
-                    LLaMA_Adapter_v2_zhibiao.append(mean3)
-                else:
-                    LLaMA_Adapter_v2_zhibiao.append(mean3/3)
-                mean3=0
-                mean5=0 
+        #     elif ren=="KIE":
+        #         f1_value = float(re.search(r"F1: (\d+\.\d+)", value).group(1))
+        #         if level==0:
+        #             init = f1_value
+        #         else:
+        #             if init!=0:
+        #                 if level==3 or level==5 or level==1:
+        #                     mean3+= (init-f1_value)/init
+        #                     mean5+= (init-f1_value)/init
+        #                 else:
+        #                     mean5+= (init-f1_value)/init
+        #                 youxiao_num_LLaAdapterv2=youxiao_num_LLaAdapterv2+1
+        #                 heji_LLaAdapterv2=heji_LLaAdapterv2+mean3
+        #             else:
+        #                 mean3='none'
+        #                 mean5='none'
+        #                 youxiao_num_LLaAdapterv2=youxiao_num_LLaAdapterv2+0
+        #                 heji_LLaAdapterv2=heji_LLaAdapterv2+0
+        #     else:
+        #         if level==0:
+        #             init = value
+        #         else:
+        #             if init!=0:
+        #                 if level==3 or level==5 or level==1:
+        #                     mean3+= (init-value)/init
+        #                     mean5+= (init-value)/init
+        #                 else:
+        #                     mean5+= (init-value)/init
+        #                 youxiao_num_LLaAdapterv2=youxiao_num_LLaAdapterv2+1
+        #                 heji_LLaAdapterv2=heji_LLaAdapterv2+mean3
+        #             else:
+        #                 mean3='none'
+        #                 mean5='none'
+        #                 youxiao_num_LLaAdapterv2=youxiao_num_LLaAdapterv2+0
+        #                 heji_LLaAdapterv2=heji_LLaAdapterv2+0
+        #     if level==5:
+        #         if isinstance(mean3, str):
+        #             LLaMA_Adapter_v2_zhibiao.append(mean3)
+        #         else:
+        #             LLaMA_Adapter_v2_zhibiao.append(mean3/3)
+        #         mean3=0
+        #         mean5=0 
 
         ####4444
         mean3=0
@@ -1055,7 +1054,7 @@ for neng in nengli:
 
     blip_zhibiao.append(youxiao_num_BLIP2)
     InstructBLIP_zhibiao.append(youxiao_num_InstructBLIP)
-    LLaMA_Adapter_v2_zhibiao.append(youxiao_num_LLaAdapterv2)
+    #LLaMA_Adapter_v2_zhibiao.append(youxiao_num_LLaAdapterv2)
     LLaVA_zhibiao.append(youxiao_num_LLaVA)
     MiniGPT_zhibiao.append(youxiao_num_MiniGPT4)
     mPLUG_zhibiao.append(youxiao_num_mPLUG)
@@ -1071,7 +1070,7 @@ for neng in nengli:
 
     blip_zhibiao.append(heji_BLIP2/youxiao_num_BLIP2)
     InstructBLIP_zhibiao.append(heji_InstructBLIP/youxiao_num_InstructBLIP)
-    LLaMA_Adapter_v2_zhibiao.append(heji_LLaAdapterv2/youxiao_num_LLaAdapterv2)
+    #LLaMA_Adapter_v2_zhibiao.append(heji_LLaAdapterv2/youxiao_num_LLaAdapterv2)
     LLaVA_zhibiao.append(heji_LLaVA/youxiao_num_LLaVA)
     MiniGPT_zhibiao.append(heji_MiniGPT/youxiao_num_MiniGPT4)
     mPLUG_zhibiao.append(heji_mPLUG/youxiao_num_mPLUG)
@@ -1095,7 +1094,7 @@ analysis_df = pd.DataFrame({
     'corrutipn_level': corrutipn_level,
     'BLIP2': blip_zhibiao,
     'InstructBLIP':InstructBLIP_zhibiao,
-    'LLaMA-Adapter-v2_f':LLaMA_Adapter_v2_zhibiao,
+    #'LLaMA-Adapter-v2_f':LLaMA_Adapter_v2_zhibiao,
     'LLaVA': LLaVA_zhibiao,
     'MiniGPT-4': MiniGPT_zhibiao,
     'mPLUG-Owl': mPLUG_zhibiao,
@@ -1110,4 +1109,4 @@ analysis_df = pd.DataFrame({
 })
 
 # 将DataFrame保存为Excel文件
-analysis_df.to_excel('corruption_result240305.xlsx', index=False)
+analysis_df.to_excel('/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/result_process_re/corruption_result240305.xlsx', index=False)

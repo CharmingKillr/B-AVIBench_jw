@@ -1,0 +1,1902 @@
+{
+    "CIFAR10_severity_Fog_0": {
+        "has_word": 70.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 58.05555555555556
+    },
+    "CIFAR10_severity_Fog_1": {
+        "has_word": 66.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 55.55555555555556
+    },
+    "CIFAR10_severity_Fog_3": {
+        "has_word": 52.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 41.34920634920635
+    },
+    "CIFAR10_severity_Fog_5": {
+        "has_word": 54.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 42.77777777777778
+    },
+    "CIFAR10_severity_Zoom_Blur_0": {
+        "has_word": 70.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 58.05555555555556
+    },
+    "CIFAR10_severity_Zoom_Blur_1": {
+        "has_word": 64.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 52.142857142857146
+    },
+    "CIFAR10_severity_Zoom_Blur_3": {
+        "has_word": 60.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 50.11904761904762
+    },
+    "CIFAR10_severity_Zoom_Blur_5": {
+        "has_word": 42.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 31.567460317460323
+    },
+    "CIFAR10_severity_Glass_Blur_0": {
+        "has_word": 70.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 58.05555555555556
+    },
+    "CIFAR10_severity_Glass_Blur_1": {
+        "has_word": 24.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 17.083333333333332
+    },
+    "CIFAR10_severity_Glass_Blur_3": {
+        "has_word": 8.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 5.972222222222221
+    },
+    "CIFAR10_severity_Glass_Blur_5": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 5.972222222222221
+    },
+    "CIFAR10_severity_Gaussian_Noise_0": {
+        "has_word": 70.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 58.05555555555556
+    },
+    "CIFAR10_severity_Gaussian_Noise_1": {
+        "has_word": 30.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 21.646825396825395
+    },
+    "CIFAR10_severity_Gaussian_Noise_3": {
+        "has_word": 8.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 6.805555555555556
+    },
+    "CIFAR10_severity_Gaussian_Noise_5": {
+        "has_word": 0.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 0.0
+    },
+    "CIFAR10_severity_Shot_Noise_0": {
+        "has_word": 70.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 58.05555555555556
+    },
+    "CIFAR10_severity_Shot_Noise_1": {
+        "has_word": 30.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 22.301587301587304
+    },
+    "CIFAR10_severity_Shot_Noise_3": {
+        "has_word": 8.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 7.5
+    },
+    "CIFAR10_severity_Shot_Noise_5": {
+        "has_word": 2.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 1.111111111111111
+    },
+    "CIFAR10_severity_Impulse_Noise_0": {
+        "has_word": 70.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 58.05555555555556
+    },
+    "CIFAR10_severity_Impulse_Noise_1": {
+        "has_word": 46.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 34.78174603174603
+    },
+    "CIFAR10_severity_Impulse_Noise_3": {
+        "has_word": 24.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 16.051587301587304
+    },
+    "CIFAR10_severity_Impulse_Noise_5": {
+        "has_word": 2.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 1.111111111111111
+    },
+    "CIFAR10_severity_Defocus_Blur_0": {
+        "has_word": 70.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 58.05555555555556
+    },
+    "CIFAR10_severity_Defocus_Blur_1": {
+        "has_word": 20.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 15.912698412698411
+    },
+    "CIFAR10_severity_Defocus_Blur_3": {
+        "has_word": 0.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 0.0
+    },
+    "CIFAR10_severity_Defocus_Blur_5": {
+        "has_word": 0.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 0.0
+    },
+    "CIFAR10_severity_Motion_Blur_0": {
+        "has_word": 70.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 58.05555555555556
+    },
+    "CIFAR10_severity_Motion_Blur_1": {
+        "has_word": 42.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 32.757936507936506
+    },
+    "CIFAR10_severity_Motion_Blur_3": {
+        "has_word": 6.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 4.861111111111112
+    },
+    "CIFAR10_severity_Motion_Blur_5": {
+        "has_word": 2.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 1.4285714285714286
+    },
+    "CIFAR10_severity_Snow_0": {
+        "has_word": 70.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 58.05555555555556
+    },
+    "CIFAR10_severity_Snow_1": {
+        "has_word": 56.00000000000001,
+        "exact match": 0.0,
+        "mean_per_class_acc": 42.59920634920634
+    },
+    "CIFAR10_severity_Snow_3": {
+        "has_word": 54.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 40.416666666666664
+    },
+    "CIFAR10_severity_Snow_5": {
+        "has_word": 28.000000000000004,
+        "exact match": 0.0,
+        "mean_per_class_acc": 18.591269841269842
+    },
+    "CIFAR10_severity_Frost_0": {
+        "has_word": 70.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 58.05555555555556
+    },
+    "CIFAR10_severity_Frost_1": {
+        "has_word": 70.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 58.05555555555556
+    },
+    "CIFAR10_severity_Frost_3": {
+        "has_word": 76.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 65.00000000000001
+    },
+    "CIFAR10_severity_Frost_5": {
+        "has_word": 68.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 55.23809523809524
+    },
+    "CIFAR10_severity_Brightness_0": {
+        "has_word": 70.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 58.05555555555556
+    },
+    "CIFAR10_severity_Brightness_1": {
+        "has_word": 66.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 51.07142857142857
+    },
+    "CIFAR10_severity_Brightness_3": {
+        "has_word": 62.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 45.55555555555556
+    },
+    "CIFAR10_severity_Brightness_5": {
+        "has_word": 52.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 38.05555555555556
+    },
+    "CIFAR10_severity_Contrast_0": {
+        "has_word": 70.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 58.05555555555556
+    },
+    "CIFAR10_severity_Contrast_1": {
+        "has_word": 68.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 57.63888888888889
+    },
+    "CIFAR10_severity_Contrast_3": {
+        "has_word": 54.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 44.58333333333333
+    },
+    "CIFAR10_severity_Contrast_5": {
+        "has_word": 24.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 20.833333333333332
+    },
+    "CIFAR10_severity_Elastic_0": {
+        "has_word": 70.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 58.05555555555556
+    },
+    "CIFAR10_severity_Elastic_1": {
+        "has_word": 4.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 3.75
+    },
+    "CIFAR10_severity_Elastic_3": {
+        "has_word": 28.000000000000004,
+        "exact match": 0.0,
+        "mean_per_class_acc": 21.38888888888889
+    },
+    "CIFAR10_severity_Elastic_5": {
+        "has_word": 0.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 0.0
+    },
+    "CIFAR10_severity_Pixelate_0": {
+        "has_word": 70.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 58.05555555555556
+    },
+    "CIFAR10_severity_Pixelate_1": {
+        "has_word": 52.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 41.666666666666664
+    },
+    "CIFAR10_severity_Pixelate_3": {
+        "has_word": 16.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 13.234126984126984
+    },
+    "CIFAR10_severity_Pixelate_5": {
+        "has_word": 4.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 2.5
+    },
+    "CIFAR10_severity_JPEG_0": {
+        "has_word": 70.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 58.05555555555556
+    },
+    "CIFAR10_severity_JPEG_1": {
+        "has_word": 24.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 17.142857142857142
+    },
+    "CIFAR10_severity_JPEG_3": {
+        "has_word": 6.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 3.75
+    },
+    "CIFAR10_severity_JPEG_5": {
+        "has_word": 0.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 0.0
+    },
+    "CIFAR10_severity_Speckle_Noise_0": {
+        "has_word": 70.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 58.05555555555556
+    },
+    "CIFAR10_severity_Speckle_Noise_1": {
+        "has_word": 40.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 27.460317460317462
+    },
+    "CIFAR10_severity_Speckle_Noise_3": {
+        "has_word": 4.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 2.361111111111111
+    },
+    "CIFAR10_severity_Speckle_Noise_5": {
+        "has_word": 0.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 0.0
+    },
+    "CIFAR10_severity_Gaussian_Blur_0": {
+        "has_word": 70.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 58.05555555555556
+    },
+    "CIFAR10_severity_Gaussian_Blur_1": {
+        "has_word": 46.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 35.476190476190474
+    },
+    "CIFAR10_severity_Gaussian_Blur_3": {
+        "has_word": 0.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 0.0
+    },
+    "CIFAR10_severity_Gaussian_Blur_5": {
+        "has_word": 0.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 0.0
+    },
+    "CIFAR10_severity_Spatter_0": {
+        "has_word": 70.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 58.05555555555556
+    },
+    "CIFAR10_severity_Spatter_1": {
+        "has_word": 64.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 50.27777777777778
+    },
+    "CIFAR10_severity_Spatter_3": {
+        "has_word": 54.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 43.07539682539683
+    },
+    "CIFAR10_severity_Spatter_5": {
+        "has_word": 56.00000000000001,
+        "exact match": 0.0,
+        "mean_per_class_acc": 41.666666666666664
+    },
+    "CIFAR10_severity_Saturate_0": {
+        "has_word": 70.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 58.05555555555556
+    },
+    "CIFAR10_severity_Saturate_1": {
+        "has_word": 66.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 55.51587301587302
+    },
+    "CIFAR10_severity_Saturate_3": {
+        "has_word": 70.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 57.22222222222222
+    },
+    "CIFAR10_severity_Saturate_5": {
+        "has_word": 46.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 33.392857142857146
+    },
+    "CIFAR100_severity_Fog_0": {
+        "has_word": 24.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 22.764227642276424
+    },
+    "CIFAR100_severity_Fog_1": {
+        "has_word": 16.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 15.853658536585366
+    },
+    "CIFAR100_severity_Fog_3": {
+        "has_word": 16.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 14.634146341463413
+    },
+    "CIFAR100_severity_Fog_5": {
+        "has_word": 12.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 9.75609756097561
+    },
+    "CIFAR100_severity_Zoom_Blur_0": {
+        "has_word": 24.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 22.764227642276424
+    },
+    "CIFAR100_severity_Zoom_Blur_1": {
+        "has_word": 20.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 21.951219512195124
+    },
+    "CIFAR100_severity_Zoom_Blur_3": {
+        "has_word": 12.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 12.195121951219512
+    },
+    "CIFAR100_severity_Zoom_Blur_5": {
+        "has_word": 12.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 12.195121951219512
+    },
+    "CIFAR100_severity_Glass_Blur_0": {
+        "has_word": 24.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 22.764227642276424
+    },
+    "CIFAR100_severity_Glass_Blur_1": {
+        "has_word": 6.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 6.097560975609756
+    },
+    "CIFAR100_severity_Glass_Blur_3": {
+        "has_word": 0.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 0.0
+    },
+    "CIFAR100_severity_Glass_Blur_5": {
+        "has_word": 0.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 0.0
+    },
+    "CIFAR100_severity_Gaussian_Noise_0": {
+        "has_word": 24.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 22.764227642276424
+    },
+    "CIFAR100_severity_Gaussian_Noise_1": {
+        "has_word": 4.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 3.6585365853658534
+    },
+    "CIFAR100_severity_Gaussian_Noise_3": {
+        "has_word": 4.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 3.6585365853658534
+    },
+    "CIFAR100_severity_Gaussian_Noise_5": {
+        "has_word": 0.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 0.0
+    },
+    "CIFAR100_severity_Shot_Noise_0": {
+        "has_word": 24.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 22.764227642276424
+    },
+    "CIFAR100_severity_Shot_Noise_1": {
+        "has_word": 8.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 7.317073170731707
+    },
+    "CIFAR100_severity_Shot_Noise_3": {
+        "has_word": 6.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 4.878048780487805
+    },
+    "CIFAR100_severity_Shot_Noise_5": {
+        "has_word": 0.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 0.0
+    },
+    "CIFAR100_severity_Impulse_Noise_0": {
+        "has_word": 24.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 22.764227642276424
+    },
+    "CIFAR100_severity_Impulse_Noise_1": {
+        "has_word": 8.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 7.317073170731707
+    },
+    "CIFAR100_severity_Impulse_Noise_3": {
+        "has_word": 4.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 3.6585365853658534
+    },
+    "CIFAR100_severity_Impulse_Noise_5": {
+        "has_word": 0.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 0.0
+    },
+    "CIFAR100_severity_Defocus_Blur_0": {
+        "has_word": 24.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 22.764227642276424
+    },
+    "CIFAR100_severity_Defocus_Blur_1": {
+        "has_word": 4.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 3.6585365853658534
+    },
+    "CIFAR100_severity_Defocus_Blur_3": {
+        "has_word": 0.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 0.0
+    },
+    "CIFAR100_severity_Defocus_Blur_5": {
+        "has_word": 2.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 2.4390243902439024
+    },
+    "CIFAR100_severity_Motion_Blur_0": {
+        "has_word": 24.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 22.764227642276424
+    },
+    "CIFAR100_severity_Motion_Blur_1": {
+        "has_word": 8.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 4.878048780487805
+    },
+    "CIFAR100_severity_Motion_Blur_3": {
+        "has_word": 0.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 0.0
+    },
+    "CIFAR100_severity_Motion_Blur_5": {
+        "has_word": 0.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 0.0
+    },
+    "CIFAR100_severity_Snow_0": {
+        "has_word": 24.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 22.764227642276424
+    },
+    "CIFAR100_severity_Snow_1": {
+        "has_word": 16.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 15.853658536585366
+    },
+    "CIFAR100_severity_Snow_3": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 9.75609756097561
+    },
+    "CIFAR100_severity_Snow_5": {
+        "has_word": 6.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 6.097560975609756
+    },
+    "CIFAR100_severity_Frost_0": {
+        "has_word": 24.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 22.764227642276424
+    },
+    "CIFAR100_severity_Frost_1": {
+        "has_word": 28.000000000000004,
+        "exact match": 0.0,
+        "mean_per_class_acc": 26.422764227642276
+    },
+    "CIFAR100_severity_Frost_3": {
+        "has_word": 22.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 21.951219512195124
+    },
+    "CIFAR100_severity_Frost_5": {
+        "has_word": 18.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 18.29268292682927
+    },
+    "CIFAR100_severity_Brightness_0": {
+        "has_word": 24.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 22.764227642276424
+    },
+    "CIFAR100_severity_Brightness_1": {
+        "has_word": 20.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 20.73170731707317
+    },
+    "CIFAR100_severity_Brightness_3": {
+        "has_word": 18.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 19.51219512195122
+    },
+    "CIFAR100_severity_Brightness_5": {
+        "has_word": 6.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 6.097560975609756
+    },
+    "CIFAR100_severity_Contrast_0": {
+        "has_word": 24.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 22.764227642276424
+    },
+    "CIFAR100_severity_Contrast_1": {
+        "has_word": 22.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 20.325203252032523
+    },
+    "CIFAR100_severity_Contrast_3": {
+        "has_word": 18.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 17.073170731707318
+    },
+    "CIFAR100_severity_Contrast_5": {
+        "has_word": 4.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 2.4390243902439024
+    },
+    "CIFAR100_severity_Elastic_0": {
+        "has_word": 24.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 22.764227642276424
+    },
+    "CIFAR100_severity_Elastic_1": {
+        "has_word": 2.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 2.4390243902439024
+    },
+    "CIFAR100_severity_Elastic_3": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 9.75609756097561
+    },
+    "CIFAR100_severity_Elastic_5": {
+        "has_word": 0.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 0.0
+    },
+    "CIFAR100_severity_Pixelate_0": {
+        "has_word": 24.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 22.764227642276424
+    },
+    "CIFAR100_severity_Pixelate_1": {
+        "has_word": 16.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 15.853658536585366
+    },
+    "CIFAR100_severity_Pixelate_3": {
+        "has_word": 2.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 2.4390243902439024
+    },
+    "CIFAR100_severity_Pixelate_5": {
+        "has_word": 6.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 6.097560975609756
+    },
+    "CIFAR100_severity_JPEG_0": {
+        "has_word": 24.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 22.764227642276424
+    },
+    "CIFAR100_severity_JPEG_1": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 9.75609756097561
+    },
+    "CIFAR100_severity_JPEG_3": {
+        "has_word": 2.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 1.2195121951219512
+    },
+    "CIFAR100_severity_JPEG_5": {
+        "has_word": 4.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 3.6585365853658534
+    },
+    "CIFAR100_severity_Speckle_Noise_0": {
+        "has_word": 24.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 22.764227642276424
+    },
+    "CIFAR100_severity_Speckle_Noise_1": {
+        "has_word": 8.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 7.317073170731707
+    },
+    "CIFAR100_severity_Speckle_Noise_3": {
+        "has_word": 4.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 2.4390243902439024
+    },
+    "CIFAR100_severity_Speckle_Noise_5": {
+        "has_word": 0.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 0.0
+    },
+    "CIFAR100_severity_Gaussian_Blur_0": {
+        "has_word": 24.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 22.764227642276424
+    },
+    "CIFAR100_severity_Gaussian_Blur_1": {
+        "has_word": 14.000000000000002,
+        "exact match": 0.0,
+        "mean_per_class_acc": 13.414634146341465
+    },
+    "CIFAR100_severity_Gaussian_Blur_3": {
+        "has_word": 4.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 3.6585365853658534
+    },
+    "CIFAR100_severity_Gaussian_Blur_5": {
+        "has_word": 0.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 0.0
+    },
+    "CIFAR100_severity_Spatter_0": {
+        "has_word": 24.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 22.764227642276424
+    },
+    "CIFAR100_severity_Spatter_1": {
+        "has_word": 24.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 24.390243902439025
+    },
+    "CIFAR100_severity_Spatter_3": {
+        "has_word": 14.000000000000002,
+        "exact match": 0.0,
+        "mean_per_class_acc": 13.414634146341465
+    },
+    "CIFAR100_severity_Spatter_5": {
+        "has_word": 16.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 17.073170731707318
+    },
+    "CIFAR100_severity_Saturate_0": {
+        "has_word": 24.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 22.764227642276424
+    },
+    "CIFAR100_severity_Saturate_1": {
+        "has_word": 28.000000000000004,
+        "exact match": 0.0,
+        "mean_per_class_acc": 26.82926829268293
+    },
+    "CIFAR100_severity_Saturate_3": {
+        "has_word": 20.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 19.10569105691057
+    },
+    "CIFAR100_severity_Saturate_5": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 10.975609756097562
+    },
+    "Flowers102_severity_Fog_0": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 10.294117647058822
+    },
+    "Flowers102_severity_Fog_1": {
+        "has_word": 6.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 5.88235294117647
+    },
+    "Flowers102_severity_Fog_3": {
+        "has_word": 6.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 5.88235294117647
+    },
+    "Flowers102_severity_Fog_5": {
+        "has_word": 6.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 5.88235294117647
+    },
+    "Flowers102_severity_Zoom_Blur_0": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 10.294117647058822
+    },
+    "Flowers102_severity_Zoom_Blur_1": {
+        "has_word": 2.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 1.4705882352941175
+    },
+    "Flowers102_severity_Zoom_Blur_3": {
+        "has_word": 0.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 0.0
+    },
+    "Flowers102_severity_Zoom_Blur_5": {
+        "has_word": 0.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 0.0
+    },
+    "Flowers102_severity_Glass_Blur_0": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 10.294117647058822
+    },
+    "Flowers102_severity_Glass_Blur_1": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 10.294117647058822
+    },
+    "Flowers102_severity_Glass_Blur_3": {
+        "has_word": 4.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 5.88235294117647
+    },
+    "Flowers102_severity_Glass_Blur_5": {
+        "has_word": 2.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 2.941176470588235
+    },
+    "Flowers102_severity_Gaussian_Noise_0": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 10.294117647058822
+    },
+    "Flowers102_severity_Gaussian_Noise_1": {
+        "has_word": 8.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 8.823529411764707
+    },
+    "Flowers102_severity_Gaussian_Noise_3": {
+        "has_word": 4.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 4.411764705882353
+    },
+    "Flowers102_severity_Gaussian_Noise_5": {
+        "has_word": 6.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 5.88235294117647
+    },
+    "Flowers102_severity_Shot_Noise_0": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 10.294117647058822
+    },
+    "Flowers102_severity_Shot_Noise_1": {
+        "has_word": 6.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 7.352941176470589
+    },
+    "Flowers102_severity_Shot_Noise_3": {
+        "has_word": 4.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 4.411764705882353
+    },
+    "Flowers102_severity_Shot_Noise_5": {
+        "has_word": 4.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 4.411764705882353
+    },
+    "Flowers102_severity_Impulse_Noise_0": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 10.294117647058822
+    },
+    "Flowers102_severity_Impulse_Noise_1": {
+        "has_word": 8.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 8.823529411764707
+    },
+    "Flowers102_severity_Impulse_Noise_3": {
+        "has_word": 4.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 4.411764705882353
+    },
+    "Flowers102_severity_Impulse_Noise_5": {
+        "has_word": 6.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 5.88235294117647
+    },
+    "Flowers102_severity_Defocus_Blur_0": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 10.294117647058822
+    },
+    "Flowers102_severity_Defocus_Blur_1": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 10.294117647058822
+    },
+    "Flowers102_severity_Defocus_Blur_3": {
+        "has_word": 2.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 1.4705882352941175
+    },
+    "Flowers102_severity_Defocus_Blur_5": {
+        "has_word": 2.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 1.4705882352941175
+    },
+    "Flowers102_severity_Motion_Blur_0": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 10.294117647058822
+    },
+    "Flowers102_severity_Motion_Blur_1": {
+        "has_word": 8.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 7.352941176470589
+    },
+    "Flowers102_severity_Motion_Blur_3": {
+        "has_word": 6.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 5.88235294117647
+    },
+    "Flowers102_severity_Motion_Blur_5": {
+        "has_word": 2.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 1.4705882352941175
+    },
+    "Flowers102_severity_Snow_0": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 10.294117647058822
+    },
+    "Flowers102_severity_Snow_1": {
+        "has_word": 12.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 13.23529411764706
+    },
+    "Flowers102_severity_Snow_3": {
+        "has_word": 4.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 2.941176470588235
+    },
+    "Flowers102_severity_Snow_5": {
+        "has_word": 4.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 2.941176470588235
+    },
+    "Flowers102_severity_Frost_0": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 10.294117647058822
+    },
+    "Flowers102_severity_Frost_1": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 10.294117647058822
+    },
+    "Flowers102_severity_Frost_3": {
+        "has_word": 2.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 1.4705882352941175
+    },
+    "Flowers102_severity_Frost_5": {
+        "has_word": 2.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 2.941176470588235
+    },
+    "Flowers102_severity_Brightness_0": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 10.294117647058822
+    },
+    "Flowers102_severity_Brightness_1": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 10.294117647058822
+    },
+    "Flowers102_severity_Brightness_3": {
+        "has_word": 6.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 7.352941176470589
+    },
+    "Flowers102_severity_Brightness_5": {
+        "has_word": 6.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 7.352941176470589
+    },
+    "Flowers102_severity_Contrast_0": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 10.294117647058822
+    },
+    "Flowers102_severity_Contrast_1": {
+        "has_word": 8.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 7.352941176470589
+    },
+    "Flowers102_severity_Contrast_3": {
+        "has_word": 6.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 7.352941176470589
+    },
+    "Flowers102_severity_Contrast_5": {
+        "has_word": 6.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 7.352941176470589
+    },
+    "Flowers102_severity_Elastic_0": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 10.294117647058822
+    },
+    "Flowers102_severity_Elastic_1": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 11.76470588235294
+    },
+    "Flowers102_severity_Elastic_3": {
+        "has_word": 8.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 8.823529411764707
+    },
+    "Flowers102_severity_Elastic_5": {
+        "has_word": 6.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 8.823529411764707
+    },
+    "Flowers102_severity_Pixelate_0": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 10.294117647058822
+    },
+    "Flowers102_severity_Pixelate_1": {
+        "has_word": 8.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 7.352941176470589
+    },
+    "Flowers102_severity_Pixelate_3": {
+        "has_word": 6.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 5.88235294117647
+    },
+    "Flowers102_severity_Pixelate_5": {
+        "has_word": 8.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 8.823529411764707
+    },
+    "Flowers102_severity_JPEG_0": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 10.294117647058822
+    },
+    "Flowers102_severity_JPEG_1": {
+        "has_word": 8.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 8.823529411764707
+    },
+    "Flowers102_severity_JPEG_3": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 10.294117647058822
+    },
+    "Flowers102_severity_JPEG_5": {
+        "has_word": 6.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 5.88235294117647
+    },
+    "Flowers102_severity_Speckle_Noise_0": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 10.294117647058822
+    },
+    "Flowers102_severity_Speckle_Noise_1": {
+        "has_word": 6.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 7.352941176470589
+    },
+    "Flowers102_severity_Speckle_Noise_3": {
+        "has_word": 2.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 2.941176470588235
+    },
+    "Flowers102_severity_Speckle_Noise_5": {
+        "has_word": 4.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 4.411764705882353
+    },
+    "Flowers102_severity_Gaussian_Blur_0": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 10.294117647058822
+    },
+    "Flowers102_severity_Gaussian_Blur_1": {
+        "has_word": 6.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 5.88235294117647
+    },
+    "Flowers102_severity_Gaussian_Blur_3": {
+        "has_word": 8.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 8.823529411764707
+    },
+    "Flowers102_severity_Gaussian_Blur_5": {
+        "has_word": 2.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 1.4705882352941175
+    },
+    "Flowers102_severity_Spatter_0": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 10.294117647058822
+    },
+    "Flowers102_severity_Spatter_1": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 10.294117647058822
+    },
+    "Flowers102_severity_Spatter_3": {
+        "has_word": 8.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 8.823529411764707
+    },
+    "Flowers102_severity_Spatter_5": {
+        "has_word": 2.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 2.941176470588235
+    },
+    "Flowers102_severity_Saturate_0": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 10.294117647058822
+    },
+    "Flowers102_severity_Saturate_1": {
+        "has_word": 6.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 5.88235294117647
+    },
+    "Flowers102_severity_Saturate_3": {
+        "has_word": 8.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 8.823529411764707
+    },
+    "Flowers102_severity_Saturate_5": {
+        "has_word": 4.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 5.88235294117647
+    },
+    "ImageNet_severity_Fog_0": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 10.0
+    },
+    "ImageNet_severity_Fog_1": {
+        "has_word": 6.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 6.0
+    },
+    "ImageNet_severity_Fog_3": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 10.0
+    },
+    "ImageNet_severity_Fog_5": {
+        "has_word": 6.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 6.0
+    },
+    "ImageNet_severity_Zoom_Blur_0": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 10.0
+    },
+    "ImageNet_severity_Zoom_Blur_1": {
+        "has_word": 14.000000000000002,
+        "exact match": 0.0,
+        "mean_per_class_acc": 14.000000000000002
+    },
+    "ImageNet_severity_Zoom_Blur_3": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 10.0
+    },
+    "ImageNet_severity_Zoom_Blur_5": {
+        "has_word": 12.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 12.0
+    },
+    "ImageNet_severity_Glass_Blur_0": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 10.0
+    },
+    "ImageNet_severity_Glass_Blur_1": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 10.0
+    },
+    "ImageNet_severity_Glass_Blur_3": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 10.0
+    },
+    "ImageNet_severity_Glass_Blur_5": {
+        "has_word": 6.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 6.0
+    },
+    "ImageNet_severity_Gaussian_Noise_0": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 10.0
+    },
+    "ImageNet_severity_Gaussian_Noise_1": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 10.0
+    },
+    "ImageNet_severity_Gaussian_Noise_3": {
+        "has_word": 6.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 6.0
+    },
+    "ImageNet_severity_Gaussian_Noise_5": {
+        "has_word": 6.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 6.0
+    },
+    "ImageNet_severity_Shot_Noise_0": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 10.0
+    },
+    "ImageNet_severity_Shot_Noise_1": {
+        "has_word": 8.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 8.0
+    },
+    "ImageNet_severity_Shot_Noise_3": {
+        "has_word": 6.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 6.0
+    },
+    "ImageNet_severity_Shot_Noise_5": {
+        "has_word": 6.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 6.0
+    },
+    "ImageNet_severity_Impulse_Noise_0": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 10.0
+    },
+    "ImageNet_severity_Impulse_Noise_1": {
+        "has_word": 8.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 8.0
+    },
+    "ImageNet_severity_Impulse_Noise_3": {
+        "has_word": 4.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 4.0
+    },
+    "ImageNet_severity_Impulse_Noise_5": {
+        "has_word": 6.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 6.0
+    },
+    "ImageNet_severity_Defocus_Blur_0": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 10.0
+    },
+    "ImageNet_severity_Defocus_Blur_1": {
+        "has_word": 8.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 8.0
+    },
+    "ImageNet_severity_Defocus_Blur_3": {
+        "has_word": 12.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 12.0
+    },
+    "ImageNet_severity_Defocus_Blur_5": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 10.0
+    },
+    "ImageNet_severity_Motion_Blur_0": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 10.0
+    },
+    "ImageNet_severity_Motion_Blur_1": {
+        "has_word": 12.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 12.0
+    },
+    "ImageNet_severity_Motion_Blur_3": {
+        "has_word": 14.000000000000002,
+        "exact match": 0.0,
+        "mean_per_class_acc": 14.000000000000002
+    },
+    "ImageNet_severity_Motion_Blur_5": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 10.0
+    },
+    "ImageNet_severity_Snow_0": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 10.0
+    },
+    "ImageNet_severity_Snow_1": {
+        "has_word": 6.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 6.0
+    },
+    "ImageNet_severity_Snow_3": {
+        "has_word": 6.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 6.0
+    },
+    "ImageNet_severity_Snow_5": {
+        "has_word": 8.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 8.0
+    },
+    "ImageNet_severity_Frost_0": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 10.0
+    },
+    "ImageNet_severity_Frost_1": {
+        "has_word": 12.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 12.0
+    },
+    "ImageNet_severity_Frost_3": {
+        "has_word": 8.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 8.0
+    },
+    "ImageNet_severity_Frost_5": {
+        "has_word": 6.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 6.0
+    },
+    "ImageNet_severity_Brightness_0": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 10.0
+    },
+    "ImageNet_severity_Brightness_1": {
+        "has_word": 12.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 12.0
+    },
+    "ImageNet_severity_Brightness_3": {
+        "has_word": 14.000000000000002,
+        "exact match": 0.0,
+        "mean_per_class_acc": 14.000000000000002
+    },
+    "ImageNet_severity_Brightness_5": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 10.0
+    },
+    "ImageNet_severity_Contrast_0": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 10.0
+    },
+    "ImageNet_severity_Contrast_1": {
+        "has_word": 6.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 6.0
+    },
+    "ImageNet_severity_Contrast_3": {
+        "has_word": 8.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 8.0
+    },
+    "ImageNet_severity_Contrast_5": {
+        "has_word": 4.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 4.0
+    },
+    "ImageNet_severity_Elastic_0": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 10.0
+    },
+    "ImageNet_severity_Elastic_1": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 10.0
+    },
+    "ImageNet_severity_Elastic_3": {
+        "has_word": 6.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 6.0
+    },
+    "ImageNet_severity_Elastic_5": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 10.0
+    },
+    "ImageNet_severity_Pixelate_0": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 10.0
+    },
+    "ImageNet_severity_Pixelate_1": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 10.0
+    },
+    "ImageNet_severity_Pixelate_3": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 10.0
+    },
+    "ImageNet_severity_Pixelate_5": {
+        "has_word": 8.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 8.0
+    },
+    "ImageNet_severity_JPEG_0": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 10.0
+    },
+    "ImageNet_severity_JPEG_1": {
+        "has_word": 12.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 12.0
+    },
+    "ImageNet_severity_JPEG_3": {
+        "has_word": 14.000000000000002,
+        "exact match": 0.0,
+        "mean_per_class_acc": 14.000000000000002
+    },
+    "ImageNet_severity_JPEG_5": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 10.0
+    },
+    "ImageNet_severity_Speckle_Noise_0": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 10.0
+    },
+    "ImageNet_severity_Speckle_Noise_1": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 10.0
+    },
+    "ImageNet_severity_Speckle_Noise_3": {
+        "has_word": 6.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 6.0
+    },
+    "ImageNet_severity_Speckle_Noise_5": {
+        "has_word": 6.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 6.0
+    },
+    "ImageNet_severity_Gaussian_Blur_0": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 10.0
+    },
+    "ImageNet_severity_Gaussian_Blur_1": {
+        "has_word": 14.000000000000002,
+        "exact match": 0.0,
+        "mean_per_class_acc": 14.000000000000002
+    },
+    "ImageNet_severity_Gaussian_Blur_3": {
+        "has_word": 8.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 8.0
+    },
+    "ImageNet_severity_Gaussian_Blur_5": {
+        "has_word": 12.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 12.0
+    },
+    "ImageNet_severity_Spatter_0": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 10.0
+    },
+    "ImageNet_severity_Spatter_1": {
+        "has_word": 12.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 12.0
+    },
+    "ImageNet_severity_Spatter_3": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 10.0
+    },
+    "ImageNet_severity_Spatter_5": {
+        "has_word": 4.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 4.0
+    },
+    "ImageNet_severity_Saturate_0": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 10.0
+    },
+    "ImageNet_severity_Saturate_1": {
+        "has_word": 12.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 12.0
+    },
+    "ImageNet_severity_Saturate_3": {
+        "has_word": 14.000000000000002,
+        "exact match": 0.0,
+        "mean_per_class_acc": 14.000000000000002
+    },
+    "ImageNet_severity_Saturate_5": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 10.0
+    },
+    "OxfordIIITPet_severity_Fog_0": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 6.547619047619048
+    },
+    "OxfordIIITPet_severity_Fog_1": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 8.333333333333332
+    },
+    "OxfordIIITPet_severity_Fog_3": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 8.333333333333332
+    },
+    "OxfordIIITPet_severity_Fog_5": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 8.333333333333332
+    },
+    "OxfordIIITPet_severity_Zoom_Blur_0": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 6.547619047619048
+    },
+    "OxfordIIITPet_severity_Zoom_Blur_1": {
+        "has_word": 4.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 2.380952380952381
+    },
+    "OxfordIIITPet_severity_Zoom_Blur_3": {
+        "has_word": 2.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 1.1904761904761905
+    },
+    "OxfordIIITPet_severity_Zoom_Blur_5": {
+        "has_word": 2.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 1.1904761904761905
+    },
+    "OxfordIIITPet_severity_Glass_Blur_0": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 6.547619047619048
+    },
+    "OxfordIIITPet_severity_Glass_Blur_1": {
+        "has_word": 8.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 5.357142857142857
+    },
+    "OxfordIIITPet_severity_Glass_Blur_3": {
+        "has_word": 4.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 2.976190476190476
+    },
+    "OxfordIIITPet_severity_Glass_Blur_5": {
+        "has_word": 2.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 1.1904761904761905
+    },
+    "OxfordIIITPet_severity_Gaussian_Noise_0": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 6.547619047619048
+    },
+    "OxfordIIITPet_severity_Gaussian_Noise_1": {
+        "has_word": 8.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 4.761904761904762
+    },
+    "OxfordIIITPet_severity_Gaussian_Noise_3": {
+        "has_word": 6.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 3.571428571428571
+    },
+    "OxfordIIITPet_severity_Gaussian_Noise_5": {
+        "has_word": 2.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 1.1904761904761905
+    },
+    "OxfordIIITPet_severity_Shot_Noise_0": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 6.547619047619048
+    },
+    "OxfordIIITPet_severity_Shot_Noise_1": {
+        "has_word": 8.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 4.761904761904762
+    },
+    "OxfordIIITPet_severity_Shot_Noise_3": {
+        "has_word": 6.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 3.571428571428571
+    },
+    "OxfordIIITPet_severity_Shot_Noise_5": {
+        "has_word": 2.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 1.1904761904761905
+    },
+    "OxfordIIITPet_severity_Impulse_Noise_0": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 6.547619047619048
+    },
+    "OxfordIIITPet_severity_Impulse_Noise_1": {
+        "has_word": 6.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 3.571428571428571
+    },
+    "OxfordIIITPet_severity_Impulse_Noise_3": {
+        "has_word": 6.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 3.571428571428571
+    },
+    "OxfordIIITPet_severity_Impulse_Noise_5": {
+        "has_word": 2.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 1.1904761904761905
+    },
+    "OxfordIIITPet_severity_Defocus_Blur_0": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 6.547619047619048
+    },
+    "OxfordIIITPet_severity_Defocus_Blur_1": {
+        "has_word": 8.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 5.357142857142857
+    },
+    "OxfordIIITPet_severity_Defocus_Blur_3": {
+        "has_word": 8.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 5.357142857142857
+    },
+    "OxfordIIITPet_severity_Defocus_Blur_5": {
+        "has_word": 8.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 5.357142857142857
+    },
+    "OxfordIIITPet_severity_Motion_Blur_0": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 6.547619047619048
+    },
+    "OxfordIIITPet_severity_Motion_Blur_1": {
+        "has_word": 8.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 5.357142857142857
+    },
+    "OxfordIIITPet_severity_Motion_Blur_3": {
+        "has_word": 4.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 2.380952380952381
+    },
+    "OxfordIIITPet_severity_Motion_Blur_5": {
+        "has_word": 2.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 1.1904761904761905
+    },
+    "OxfordIIITPet_severity_Snow_0": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 6.547619047619048
+    },
+    "OxfordIIITPet_severity_Snow_1": {
+        "has_word": 2.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 3.571428571428571
+    },
+    "OxfordIIITPet_severity_Snow_3": {
+        "has_word": 0.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 0.0
+    },
+    "OxfordIIITPet_severity_Snow_5": {
+        "has_word": 0.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 0.0
+    },
+    "OxfordIIITPet_severity_Frost_0": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 6.547619047619048
+    },
+    "OxfordIIITPet_severity_Frost_1": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 8.928571428571429
+    },
+    "OxfordIIITPet_severity_Frost_3": {
+        "has_word": 6.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 3.571428571428571
+    },
+    "OxfordIIITPet_severity_Frost_5": {
+        "has_word": 2.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 1.1904761904761905
+    },
+    "OxfordIIITPet_severity_Brightness_0": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 6.547619047619048
+    },
+    "OxfordIIITPet_severity_Brightness_1": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 8.333333333333332
+    },
+    "OxfordIIITPet_severity_Brightness_3": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 8.333333333333332
+    },
+    "OxfordIIITPet_severity_Brightness_5": {
+        "has_word": 8.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 4.761904761904762
+    },
+    "OxfordIIITPet_severity_Contrast_0": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 6.547619047619048
+    },
+    "OxfordIIITPet_severity_Contrast_1": {
+        "has_word": 6.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 3.571428571428571
+    },
+    "OxfordIIITPet_severity_Contrast_3": {
+        "has_word": 4.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 2.380952380952381
+    },
+    "OxfordIIITPet_severity_Contrast_5": {
+        "has_word": 0.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 0.0
+    },
+    "OxfordIIITPet_severity_Elastic_0": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 6.547619047619048
+    },
+    "OxfordIIITPet_severity_Elastic_1": {
+        "has_word": 8.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 5.357142857142857
+    },
+    "OxfordIIITPet_severity_Elastic_3": {
+        "has_word": 14.000000000000002,
+        "exact match": 0.0,
+        "mean_per_class_acc": 13.69047619047619
+    },
+    "OxfordIIITPet_severity_Elastic_5": {
+        "has_word": 4.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 2.380952380952381
+    },
+    "OxfordIIITPet_severity_Pixelate_0": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 6.547619047619048
+    },
+    "OxfordIIITPet_severity_Pixelate_1": {
+        "has_word": 8.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 5.357142857142857
+    },
+    "OxfordIIITPet_severity_Pixelate_3": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 6.547619047619048
+    },
+    "OxfordIIITPet_severity_Pixelate_5": {
+        "has_word": 8.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 5.357142857142857
+    },
+    "OxfordIIITPet_severity_JPEG_0": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 6.547619047619048
+    },
+    "OxfordIIITPet_severity_JPEG_1": {
+        "has_word": 8.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 5.357142857142857
+    },
+    "OxfordIIITPet_severity_JPEG_3": {
+        "has_word": 6.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 3.571428571428571
+    },
+    "OxfordIIITPet_severity_JPEG_5": {
+        "has_word": 8.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 4.761904761904762
+    },
+    "OxfordIIITPet_severity_Speckle_Noise_0": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 6.547619047619048
+    },
+    "OxfordIIITPet_severity_Speckle_Noise_1": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 8.333333333333332
+    },
+    "OxfordIIITPet_severity_Speckle_Noise_3": {
+        "has_word": 4.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 2.380952380952381
+    },
+    "OxfordIIITPet_severity_Speckle_Noise_5": {
+        "has_word": 2.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 1.1904761904761905
+    },
+    "OxfordIIITPet_severity_Gaussian_Blur_0": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 6.547619047619048
+    },
+    "OxfordIIITPet_severity_Gaussian_Blur_1": {
+        "has_word": 8.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 5.357142857142857
+    },
+    "OxfordIIITPet_severity_Gaussian_Blur_3": {
+        "has_word": 8.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 5.357142857142857
+    },
+    "OxfordIIITPet_severity_Gaussian_Blur_5": {
+        "has_word": 8.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 5.357142857142857
+    },
+    "OxfordIIITPet_severity_Spatter_0": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 6.547619047619048
+    },
+    "OxfordIIITPet_severity_Spatter_1": {
+        "has_word": 12.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 12.5
+    },
+    "OxfordIIITPet_severity_Spatter_3": {
+        "has_word": 4.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 7.142857142857142
+    },
+    "OxfordIIITPet_severity_Spatter_5": {
+        "has_word": 2.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 1.1904761904761905
+    },
+    "OxfordIIITPet_severity_Saturate_0": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 6.547619047619048
+    },
+    "OxfordIIITPet_severity_Saturate_1": {
+        "has_word": 12.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 10.119047619047619
+    },
+    "OxfordIIITPet_severity_Saturate_3": {
+        "has_word": 10.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 8.333333333333332
+    },
+    "OxfordIIITPet_severity_Saturate_5": {
+        "has_word": 4.0,
+        "exact match": 0.0,
+        "mean_per_class_acc": 2.380952380952381
+    }
+}

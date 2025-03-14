@@ -83,19 +83,19 @@ class MiniGPT4(Blip2Base):
         print('Loading Q-Former Done')
 
         print('Loading LLAMA')
-        self.llama_tokenizer = LlamaTokenizer.from_pretrained('/data/jw/huggingfacemodel/MiniGPT-4-LLaMA-7B', use_fast=False)
+        self.llama_tokenizer = LlamaTokenizer.from_pretrained('/seu_nvme/home/230239304/huggingfacemodel/MiniGPT-4-LLaMA-7B', use_fast=False)
         self.llama_tokenizer.pad_token = self.llama_tokenizer.eos_token
 
         if self.low_resource:
             self.llama_model = LlamaForCausalLM.from_pretrained(
-                '/data/jw/huggingfacemodel/MiniGPT-4-LLaMA-7B',
+                '/seu_nvme/home/230239304/huggingfacemodel/MiniGPT-4-LLaMA-7B',
                 torch_dtype=torch.float16,
                 load_in_8bit=True,
                 device_map={'': device_8bit}
             )
         else:
             self.llama_model = LlamaForCausalLM.from_pretrained(
-                '/data/jw/huggingfacemodel/MiniGPT-4-LLaMA-7B',
+                '/seu_nvme/home/230239304/huggingfacemodel/MiniGPT-4-LLaMA-7B',
                 torch_dtype=torch.float16,
             )
 

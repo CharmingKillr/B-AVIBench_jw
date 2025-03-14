@@ -117,7 +117,7 @@ def load_model(model_path, model_name, dtype=torch.float16, device='cpu'):
 
 class TestLLaVA:
     def __init__(self, device=None):
-        model_path="liuhaotian/LLaVA-Lightning-MPT-7B-preview"
+        model_path="/seu_nvme/home/230239304/huggingfacemodel/LLaVA-Lightning-MPT-7B-preview"
         model_name = get_model_name(model_path)
         self.tokenizer, self.model, self.image_processor, self.context_len = load_model(model_path, model_name)
         self.conv = get_conv(model_name)
@@ -159,9 +159,14 @@ class TestLLaVA:
         for image, question in zip(image_list, question_list):
             # print("jfk",image)
             if method is not None and level!=0:
+                if level == 1:
+                    DATA_PATA = '/data/jw/projects/B-AVIBench_jw/eval-data/corruption/lvlm_tiny_corruption_1'
+                elif level == 3:
+                    DATA_PATA = '/data/jw/projects/B-AVIBench_jw/eval-data/corruption/lvlm_tiny_corruption_3'
+                elif level == 5:
+                    DATA_PATA = '/data/jw/projects/B-AVIBench_jw/eval-data/corruption/lvlm_tiny_corruption_5'
                 tmp=image.split('/')
-                image=os.path.join('/nvme/share/zhanghao/tiny_lvlm_new',tmp[-2]+'_{}_{}'.format(method,level),tmp[-1])#,tmp[-1]
-            # print("jkf",image,"22")
+                image=os.path.join(DATA_PATA,tmp[-2]+'_{}_{}'.format(method,level),tmp[-1])
             image = get_image(image)
             conv = self.conv.copy()
             text = question + '\n<image>'
@@ -254,10 +259,10 @@ class TestLLaVA:
 
             last_token_logits = logits[:, -1]
             if temperature < 1e-4:
-                token = torch.argmax(last_token_logits, dim=-1)
+                token = torch.argmax(last_token_logits, dim=-1).unsqueeze(-1)
             else:
                 probs = torch.softmax(last_token_logits / temperature, dim=-1)
-                token = torch.multinomial(probs, num_samples=1)
+                token = torch.multinomial(probs, num_samples=1).unsqueeze(-1)
             token = token.long().to(self.model.device)
 
             output_ids.append(token)

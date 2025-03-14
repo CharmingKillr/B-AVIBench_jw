@@ -22,7 +22,7 @@ Object hallucination: MSCOCO_pope_random,MSCOCO_pope_adversarial,MSCOCO_pope_pop
 """
 def parse_args():
     parser = argparse.ArgumentParser(description='PyTorch NPU Model gardient-based attack')
-    parser.add_argument('--model_name', type=str, default='LLaVA15', help='Path to the NPU model')
+    parser.add_argument('--model_name', type=str, default='LLaVA15', help='Path to the CUDA model')
     parser.add_argument('--device', type=int, default=1, help='GPU device ID (default: 0)')
     parser.add_argument("--batch_size", type=int, default=4)
     parser.add_argument("--answer_path", type=str, default="/seu_nvme/home/230239304/projects_jw/B-AVIBench_jw/image_attack_tool/tiny_grad_answers")

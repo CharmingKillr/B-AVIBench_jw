@@ -95,17 +95,15 @@ def main(args):
     answer_path = f"{args.answer_path}/{args.model_name}"
     model = get_model(args.model_name, device=torch.device('cuda')) 
        
-    #dataset_names = args.dataset_name.split(',')
-    result = {}
-    args.renew = False
+    #result = {}
+    args.renew = True
     if args.renew :
-        time_renew = '2025_0227_01_30_15'
+        time_renew = '2025_0306_17_48_44'
         time = time_renew
         
     for dataset_name in args.dataset_name:
         eval_function, task_type = dataset_task_dict[dataset_name]      
         
-
         for method_name in method:     
             for k in [0,1,3,5]:#    
                 final_path = os.path.join(answer_path,time,f'{dataset_name}_{method_name}_{k}.json')
@@ -115,7 +113,8 @@ def main(args):
 
                 dataset = GeneralDataset(dataset_name) 
                 metrics = eval_function(model, dataset, args.model_name, dataset_name, task_type, time, args.batch_size, answer_path=answer_path, method=method_name, level=k)
-                result["{}_severity_{}_{}".format(dataset_name,method_name,k)] = metrics                
+                result_key = "{}_severity_{}_{}".format(dataset_name, method_name, k)
+
                 result_path = os.path.join(os.path.join(answer_path, time), 'result.json')  
 
                 if args.renew:
@@ -124,17 +123,20 @@ def main(args):
                             existing_results = json.load(f)
                         except:
                             existing_results={}
-                    
-                    existing_results.updata(result)
+                else:
+                    existing_results={}
+                # 更新 existing_results
+                existing_results[result_key] = metrics
                 
+                # 写回文件（确保所有数据不会丢失）
                 with open(result_path, "w") as f:
-                    f.write(json.dumps(result, indent=4))
+                    json.dump(existing_results, f, indent=4)
 
 
 if __name__ == "__main__":
     args = parse_args()
     args.dataset_name = ['ImageNetVC_color','ImageNetVC_component','ImageNetVC_material','ImageNetVC_others','ImageNetVC_shape','MSCOCO_MCI','VCR1_MCI','MSCOCO_OC','VCR1_OC','FUNSD','POIE','SROIE',
                          'COCO-Text','CTW','CUTE80','HOST','IC13','IC15','IIIT5K','SVTP','SVT','NoCaps','Flickr','MSCOCO_caption_karpathy','WHOOPSCaption','AOKVQAClose','AOKVQAOpen','DocVQA','GQA',
-                         'OCRVQA','OKVQA','STVQA','TextVQA','WHOOPSVQA','WHOOPSWeird','Visdial','IconQA','VSR','ScienceQAIMG','VizWiz','MSCOCO_pope_random','MSCOCO_pope_adversarial','MSCOCO_pope_popular']
-
+                         'OCRVQA','OKVQA','STVQA','TextVQA','WHOOPSVQA','WHOOPSWeird','Visdial','IconQA','VSR','ScienceQAIMG','VizWiz','MSCOCO_pope_random','MSCOCO_pope_adversarial','MSCOCO_pope_popular',
+                         'CIFAR10','CIFAR100','Flowers102','ImageNet','OxfordIIITPet','Total-Text','WOST','WordArt']
     main(args)

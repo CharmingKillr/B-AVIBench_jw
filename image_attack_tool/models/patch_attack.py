@@ -17,6 +17,20 @@ from .tools import VQAEval
 from models import llama_adapter_v2 as llama
 import imageio
 from collections import defaultdict
+from functools import reduce
+import torch.nn.functional as F
+import torch.nn as nn
+import math
+
+
+
+def has_nested_attr(obj, attr_path):
+    """检查对象是否具有嵌套属性"""
+    try:
+        reduce(getattr, attr_path.split('.'), obj)
+        return True
+    except AttributeError:
+        return False
 ####
 def softmax(logits):
     """Transforms predictions into probability values.
@@ -438,267 +452,241 @@ class PatchAttack(Attacker):
         if mode == 'untargeted':
             return self.patch_attack(image, label, starting_point, iterations, min_, max_, mode='untargeted', question_list=question_list, chat_list=chat_list, max_new_tokens=max_new_tokens,model_name=model_name,vis_proc=vis_proc)
 
+    def forward(self, x):
+        return torch.nn.functional.gelu(x)
+
 class PatchGradAttack(Attacker):
-    def __init__(self, model, task, label, 
+    def __init__(self, model, task, label, tokenizer, 
                 image_layers=[12, 18, 23], 
                 text_layers=[16, 24, 31],
                 patch_size=16,
                 topk_ratio=0.3):
         super().__init__(model, task, label)
         
-        # 获取模型原始图像尺寸配置
-        self.original_image_size = self.model.model.vision_tower.config.image_size
-        # 计算所需尺寸
-        self.required_size = self._calculate_required_size()
-
-        # 攻击参数配置
-        self.image_layers = image_layers
-        self.text_layers = text_layers
+        # 模型组件验证
+        self._validate_model_structure()
+        
+        # 特征配置
+        self.tokenizer = tokenizer
+        self.image_layers = sorted(set(image_layers))
+        self.text_layers = sorted(set(text_layers))
         self.patch_size = patch_size
         self.topk_ratio = topk_ratio
         self.device = next(model.parameters()).device
         
-        # 特征存储（使用CPU防止显存溢出）
-        self.image_features = defaultdict(list)
-        self.text_features = defaultdict(list)
+        # 特征存储（使用内存映射防止OOM）
+        self.image_features = defaultdict(lambda: [])
+        self.text_features = defaultdict(lambda: [])
         
-        # 模型结构验证
-        self._validate_model_structure()
         # 注册钩子
         self._register_hooks()
-    def _validate_model_structure(self):
-        """验证关键模型组件是否存在"""
-        # 视觉编码路径验证
-        if not hasattr(self.model.model, 'vision_tower'):
-            raise AttributeError("模型缺少vision_tower属性")
-        if not hasattr(self.model.model.vision_tower, 'vision_tower'):
-            raise AttributeError("CLIPVisionTower缺少vision_tower属性")
-        
-        # 文本解码路径验证
-        if not hasattr(self.model.model, 'layers'):
-            raise AttributeError("模型缺少layers属性(LlamaDecoderLayer)")
-            
-        # 层索引范围验证
-        vision_encoder = self.model.model.vision_tower.vision_tower.vision_model.encoder
-        if max(self.image_layers) >= len(vision_encoder.layers):
-            raise ValueError(f"视觉层索引越界，最大允许值：{len(vision_encoder.layers)-1}")
-            
-        if max(self.text_layers) >= len(self.model.model.layers):
-            raise ValueError(f"文本层索引越界，最大允许值：{len(self.model.model.layers)-1}")
-        
-    def _calculate_required_size(self):
-        """根据位置嵌入计算所需输入尺寸"""
-        num_positions = self.model.model.vision_tower.config.num_positions  # 577
-        patch_size = self.model.model.vision_tower.config.patch_size  # 14
-        num_patches = num_positions - 1  # 576
-        grid_size = int(num_patches ** 0.5)  # 24
-        return grid_size * patch_size  # 24 * 14=336
+
+        self._init_projection_layer()
+
+    def _init_projection_layer(self):
+        def _init_weights(m):
+            if isinstance(m, nn.Linear):
+                # 第一层使用He初始化
+                if m.in_features == 1024:
+                    nn.init.xavier_normal_(m.weight, gain=1.1)
+                    # 保持初始输出幅度稳定
+                    with torch.no_grad():
+                        m.weight.data *= math.sqrt(2.0 / (1 + math.sqrt(2/math.pi)))  # GELU校正因子
+                # 第二层使用Xavier初始化
+                elif m.out_features == 4096:
+                    nn.init.xavier_normal_(m.weight, gain=nn.init.calculate_gain('linear'))
+                
+                # 偏置初始化
+                if m.bias is not None:
+                    nn.init.constant_(m.bias, 0)
+                    
+                # 添加权重归一化约束
+                m.weight.data = torch.nn.functional.normalize(m.weight, dim=1) * 0.1
     
+        # 网络结构定义
+        self.projection = nn.Sequential(
+            nn.Linear(1024, 2048),
+            nn.GELU(),
+            nn.Linear(2048, 4096),
+            nn.Dropout(p=0.1)  # 添加正则化
+        ).to(self.device).train()
+        
+        # 应用初始化
+        self.projection.apply(_init_weights)
+        
+        # 残差连接初始化
+        self.residual = nn.Linear(1024, 4096).to(self.device).train()
+        nn.init.eye_(self.residual.weight)
+        nn.init.zeros_(self.residual.bias)
+        
+        # 自适应缩放因子
+        self.alpha = nn.Parameter(torch.tensor(0.1))
+
+    def forward_projection(self, x):
+        # 主路径
+        main_path = self.projection(x)
+        # 残差路径
+        residual = self.residual(x)
+        # 自适应融合
+        return self.alpha * main_path + (1 - self.alpha) * residual
+
+    def _reset_features(self):
+        """重置特征缓存（关键补充）"""
+        # 清空图像特征缓存
+        for key in self.image_features:
+            self.image_features[key].clear()
+        # 清空文本特征缓存
+        for key in self.text_features:
+            self.text_features[key].clear()
+        # 可选：释放GPU缓存
+        if torch.cuda.is_available():
+            torch.cuda.empty_cache()
+
+    def _validate_model_structure(self):
+        """深度验证模型结构完整性"""
+        required_components = [
+        'model.vision_tower.vision_tower.vision_model.encoder.layers',
+        'model.layers',
+        'model.vision_tower.vision_tower.config.image_size',
+        'model.vision_tower.vision_tower.config.patch_size'
+        ]
+    
+        for comp in required_components:
+            if not has_nested_attr(self.model, comp):
+                raise AttributeError(f"模型缺少关键组件: {comp}")
+
     def _register_hooks(self):
-        """注册前向钩子（修复闭包问题）"""
+        """优化钩子注册逻辑"""
         # 视觉编码器钩子
         vision_encoder = self.model.model.vision_tower.vision_tower.vision_model.encoder
-        
-        def make_vision_hook(idx):
-            def hook(module, inputs, outputs):
-                # 处理可能的元组输出
-                feat = outputs[0] if isinstance(outputs, tuple) else outputs
-                self.image_features[idx].append(feat.detach().cpu())
-            return hook
-        
         for layer_idx in self.image_layers:
-            vision_encoder.layers[layer_idx].register_forward_hook(make_vision_hook(layer_idx))
+            layer = vision_encoder.layers[layer_idx]
+            layer.register_forward_hook(
+                self._create_vision_hook(layer_idx)
+            )
 
         # 文本解码器钩子
         text_decoder = self.model.model.layers
-        
-        def make_text_hook(idx):
-            def hook(module, inputs, outputs):
-                # Llama输出格式：(hidden_states, attentions)
-                self.text_features[idx].append(outputs[0].detach().cpu())
-            return hook
-        
         for layer_idx in self.text_layers:
-            text_decoder[layer_idx].register_forward_hook(make_text_hook(layer_idx))
+            layer = text_decoder[layer_idx]
+            layer.register_forward_hook(
+                self._create_text_hook(layer_idx)
+            )
 
-    def _reset_features(self):
-        """清空特征缓存"""
-        self.image_features.clear()
-        self.text_features.clear()
+    def _create_vision_hook(self, layer_idx):
+        """动态生成视觉特征处理闭包"""
+        def hook(module, inputs, outputs):
+            feat = outputs[0] if isinstance(outputs, tuple) else outputs
+            # 标准化特征尺寸 [B, Seq, D] -> [B*Seq, D]
+            self.image_features[layer_idx].append(
+                feat.detach().view(-1, feat.size(-1)).cpu()
+            )
+        return hook
 
-    def _compute_feature_loss(self):
-        """计算特征对齐损失（增强鲁棒性版本）"""
-        total_loss = 0.0
-        valid_pairs = 0
-        
-        for img_layer in self.image_layers:
-            img_feats = self.image_features.get(img_layer, [])
-            if not img_feats:
-                continue
-                
-            # 合并所有批次的特征 [steps, B, seq_len, D] -> [B*steps, D]
-            img_feat = torch.cat([f.view(-1, f.size(-1)) for f in img_feats], dim=0)
-            
-            for txt_layer in self.text_layers:
-                txt_feats = self.text_features.get(txt_layer, [])
-                if not txt_feats:
-                    continue
-                
-                # 文本特征处理 [steps, B, seq_len, D] -> [B*steps, D]
-                txt_feat = torch.cat([f.view(-1, f.size(-1)) for f in txt_feats], dim=0)
-                
-                # 维度对齐
-                min_len = min(img_feat.size(0), txt_feat.size(0))
-                img_feat = img_feat[:min_len]
-                txt_feat = txt_feat[:min_len]
-                
-                # 计算余弦相似度
-                sim = torch.cosine_similarity(img_feat, txt_feat, dim=-1).mean()
-                total_loss -= sim  # 最大化相似度即最小化负相似度
-                valid_pairs += 1
-                
-        return total_loss / valid_pairs if valid_pairs > 0 else torch.tensor(0.0)
-
-    def print_feature_stats(self):
-        """特征统计（调试用）"""
-        print("\n=== 特征收集状态 ===")
-        # 视觉特征
-        print("视觉层:")
-        for layer in self.image_layers:
-            feats = self.image_features.get(layer, [])
-            print(f"层 {layer}: {len(feats)} 特征")
-            if feats:
-                print(f"  形状示例: {feats[0].shape}")
-        
-        # 文本特征
-        print("\n文本层:")
-        for layer in self.text_layers:
-            feats = self.text_features.get(layer, [])
-            print(f"层 {layer}: {len(feats)} 特征")
-            if feats:
-                print(f"  形状示例: {feats[0].shape}")
+    def _create_text_hook(self, layer_idx):
+        """动态生成文本特征处理闭包""" 
+        def hook(module, inputs, outputs):
+            hidden_states = outputs[0]
+            # 标准化特征尺寸 [B, Seq, D] -> [B*Seq, D]
+            self.text_features[layer_idx].append(
+                hidden_states.detach().view(-1, hidden_states.size(-1)).cpu()
+            )
+        return hook
 
     def _compute_feature_loss(self):
-        loss = 0
-        valid_pairs = 0  # 记录有效特征对数量
+        """改进的特征对齐策略"""
+        dtype = torch.float32
+        # 图像特征池化
+        img_feats = torch.stack([torch.cat(feats).mean(dim=0) 
+                                for feats in self.image_features.values()]).to(self.device, dtype=dtype)  # [L_img, D_img]
         
-        for img_layer in self.img_layers:  # 修正变量名统一性（原image_layers应为img_layers）
-            # 检查图像特征有效性
-            if not self.image_features.get(img_layer) or len(self.image_features[img_layer]) == 0:
-                print(f"[Warn] 图像层 {img_layer} 无特征，跳过计算")
-                continue
-                
-            try:
-                img_feat = torch.stack(self.image_features[img_layer]).mean(dim=(1,2))  # [B, D]
-            except RuntimeError as e:
-                print(f"图像层 {img_layer} 特征异常:")
-                print(f"特征数量: {len(self.image_features[img_layer])}")
-                print(f"首个特征形状: {self.image_features[img_layer][0].shape if self.image_features[img_layer] else '空'}")
-                raise e
-
-            for txt_layer in self.txt_layers:
-                # 检查文本特征有效性
-                if not self.text_features.get(txt_layer) or len(self.text_features[txt_layer]) == 0:
-                    print(f"[Warn] 文本层 {txt_layer} 无特征，跳过配对 (img_layer={img_layer}, txt_layer={txt_layer})")
-                    continue
-                    
-                try:
-                    txt_feat = torch.stack(self.text_features[txt_layer]).mean(dim=1)  # [B, D]
-                except RuntimeError as e:
-                    print(f"文本层 {txt_layer} 特征异常:")
-                    print(f"特征数量: {len(self.text_features[txt_layer])}")
-                    print(f"首个特征形状: {self.text_features[txt_layer][0].shape if self.text_features[txt_layer] else '空'}")
-                    raise e
-
-                # 维度对齐检查
-                if img_feat.shape[0] != txt_feat.shape[0]:
-                    print(f"批次不匹配: img_feat {img_feat.shape}, txt_feat {txt_feat.shape}")
-                    continue
-
-                # 设备一致性检查
-                if img_feat.device != txt_feat.device:
-                    print(f"设备不一致: img_feat在 {img_feat.device}, txt_feat在 {txt_feat.device}")
-                    txt_feat = txt_feat.to(img_feat.device)
-
-                # 计算相似度
-                sim = torch.cosine_similarity(img_feat, txt_feat, dim=-1).mean()
-                loss -= sim
-                valid_pairs += 1
-
-        # 归一化处理
-        if valid_pairs > 0:
-            return loss / valid_pairs  # 平均损失
-        else:
-            print("[Error] 所有特征对均无效，返回零损失")
-            return torch.tensor(0.0, device=self.device)
+        # 文本特征池化
+        txt_feats = torch.stack([torch.cat(feats).mean(dim=0) 
+                                for feats in self.text_features.values()]).to(self.device, dtype=dtype)  # [L_txt, D_txt]
+        
+        # 动态维度对齐
+        projected_feats = self.forward_projection(img_feats).to(dtype)  # [L_img, D_txt]
+        
+        # 跨模态注意力
+        attn_weights = F.softmax(projected_feats @ txt_feats.T, dim=-1)  # [L_img, L_txt]
+        
+        attended_feats = attn_weights.to(dtype) @ txt_feats.to(dtype)  # [L_img, D_txt]
+        
+        # 对比损失计算
+        sim_matrix = F.cosine_similarity(
+            projected_feats.unsqueeze(1).to(dtype),  # [L_img, 1, D_txt]
+            attended_feats.unsqueeze(0).to(dtype),  # [1, L_img, D_txt]
+            dim=-1
+        )  # [L_img, L_img]
+        
+        loss = -sim_matrix.mean()  # 计算平均相似度损失
+        
+        return loss  # 直接返回损失
 
     def _get_patch_importance(self, grad_map):
-        """基于梯度的patch重要性分析(保留原始逻辑)"""
-        grad_map = grad_map.sum(dim=1)  # 合并通道维度
-        h, w = grad_map.shape[-2:]
+        """优化梯度显著性计算"""
+        # 通道平均梯度 [B, C, H, W] -> [H, W]
+        grad_map = grad_map.abs().mean(dim=1).squeeze(0)
         
+        # 动态计算补丁网格
+        h, w = grad_map.shape
         ph = h // self.patch_size
         pw = w // self.patch_size
         
-        importance = torch.zeros((ph, pw), device=grad_map.device)
-        for i in range(ph):
-            for j in range(pw):
-                y_start = i * self.patch_size
-                y_end = (i+1) * self.patch_size
-                x_start = j * self.patch_size
-                x_end = (j+1) * self.patch_size
-                
-                importance[i,j] = grad_map[..., y_start:y_end, x_start:x_end].abs().mean()
+        # 池化计算显著性
+        importance = F.avg_pool2d(
+            grad_map.unsqueeze(0).unsqueeze(0),
+            kernel_size=self.patch_size,
+            stride=self.patch_size
+        ).view(ph, pw)
+        
         return importance
 
-    def attack(self, image, label, iterations=100, lr=0.1, 
-              question_list=None, max_new_tokens=256, 
-              model_name=None, vis_proc=None):
-        """完整攻击流程（保留原始优化逻辑）"""
-        # 初始化对抗样本 image (224,224,3) -> tensor (1,3,224,224)
-        image_tensor = torch.from_numpy(image).permute(2,0,1).unsqueeze(0).float().to(self.device)
-        image_tensor.requires_grad_(True)
+    def attack(self, image, label, iterations=50, lr=0.01, momentum=0.9, 
+              question_list=None, max_new_tokens=256, model_name=None, vis_proc=None):
+        """优化攻击流程"""
+        # 输入标准化
+        image_tensor = self._preprocess_image(image)
+        optimizer = torch.optim.SGD([image_tensor], lr=lr, momentum=momentum)
         
         best_adv = image.copy()
         min_dist = float('inf')
-        optimizer = torch.optim.Adam([image_tensor], lr=lr)
         
         for step in range(iterations):
             self._reset_features()
             
-            # 前向传播（触发钩子）
+            # 前向传播
             with torch.no_grad():
-                # 显式调用视觉编码器
-                _ = self.model.model.vision_tower(image_tensor)
-                # 显式调用文本解码器
-                _ = self.model.model(input_ids=torch.tensor([[1]]).to(self.device))  # 使用虚拟输入
+                self._trigger_forward(image_tensor)
             
-            # 计算特征损失
+            # 损失计算
             loss = self._compute_feature_loss()
             
             # 反向传播
             optimizer.zero_grad()
             loss.backward()
             
-            # 获取梯度并计算重要性
+            # 梯度处理
             grad_map = image_tensor.grad.data.clone()
             importance_map = self._get_patch_importance(grad_map)
             
-            # 选择topk重要区域
-            k = int(self.topk_ratio * importance_map.numel())
+            # 动态topk选择
+            k = max(1, int(self.topk_ratio * importance_map.numel()))
             _, topk_indices = torch.topk(importance_map.view(-1), k)
             
-            # 生成mask并更新
+            # 生成掩码
             mask = torch.zeros_like(importance_map)
             mask.view(-1)[topk_indices] = 1
             
+            # 参数更新
             with torch.no_grad():
-                delta = lr * grad_map.sign() * mask.unsqueeze(0).unsqueeze(0)
+                delta = lr * grad_map * mask.unsqueeze(0).unsqueeze(0)
                 image_tensor.data = torch.clamp(image_tensor + delta, 0, 255)
             
             # 评估对抗样本
-            current_adv = image_tensor.detach().squeeze().permute(1,2,0).cpu().numpy()
-            _, is_adv = self.predictions(current_adv, question_list, None, max_new_tokens, model_name, vis_proc)
+            current_adv = self._postprocess_image(image_tensor)
+            _, is_adv = self.predictions(current_adv, question_list, None, 
+                                       max_new_tokens, model_name, vis_proc)
             
             # 更新最佳样本
             current_dist = l2_distance(current_adv, image)
@@ -707,4 +695,154 @@ class PatchGradAttack(Attacker):
                 min_dist = current_dist
                 
         return best_adv, min_dist
-       
+
+    def _preprocess_image(self, image):
+        """图像预处理标准化"""
+        # 转换为模型输入尺寸
+        processed = Image.fromarray(image.astype(np.uint8)).resize(
+            (self.model.model.vision_tower.config.image_size, 
+             self.model.model.vision_tower.config.image_size),
+            Image.BICUBIC
+        )
+        
+        # 转换为张量 [H, W, C] -> [C, H, W]
+        tensor = torch.from_numpy(np.array(processed)).permute(2,0,1).float()
+        return tensor.unsqueeze(0).to(self.device).requires_grad_(True)
+
+    def _postprocess_image(self, tensor):
+        """图像后处理标准化"""
+        return tensor.squeeze().permute(1,2,0).detach().cpu().numpy().astype(np.uint8)
+
+    def _trigger_forward(self, image_tensor):
+        """重构前向传播（保持梯度流）"""
+        # 禁用模型参数的梯度计算（只保留图像梯度）
+        with torch.no_grad():
+            # 视觉编码
+            vision_outputs = self.model.model.vision_tower(image_tensor)
+            last_hidden_state = vision_outputs
+            
+            # 文本解码（使用虚拟输入）
+            dummy_input = torch.tensor([[self.tokenizer.bos_token_id]], 
+                                     device=self.device)
+            self.model(dummy_input, images=last_hidden_state)
+
+class MMProjectorAttack(Attacker):
+    def __init__(self, model, task, label, tokenizer, 
+                projector_layers=['mm_projector.0', 'mm_projector.2'],  # 典型的两层结构
+                device='cuda'):
+        super().__init__(model, task, label)
+        
+        # 模型结构验证
+        self._validate_projector_structure(projector_layers)
+        
+        # 配置参数
+        self.tokenizer = tokenizer
+        self.device = device
+        self.projector = self._get_projector(projector_layers)
+        
+        # 特征缓存
+        self.visual_feats = None
+        self.proj_feats = None
+        self.text_feats = None
+        
+        # 注册钩子
+        self.hook_handles = []
+        self._register_projector_hooks()
+
+    def _validate_projector_structure(self, layers):
+        """验证mm_projector结构完整性"""
+        for layer in layers:
+            if not has_nested_attr(self.model, layer):
+                raise AttributeError(f"Missing projector layer: {layer}")
+                
+        # 验证典型的两层结构（Linear +激活函数+ Linear）
+        try:
+            layer0 = reduce(getattr, layers[0].split('.'), self.model)
+            layer1 = reduce(getattr, layers[1].split('.'), self.model)
+            if not (isinstance(layer0, torch.nn.Linear) and isinstance(layer1, torch.nn.Linear)):
+                raise ValueError("Projector layers should be Linear layers")
+        except Exception as e:
+            raise RuntimeError(f"Projector structure validation failed: {str(e)}")
+
+    def _get_projector(self, layers):
+        """获取投影层引用"""
+        return [reduce(getattr, layer.split('.'), self.model) for layer in layers]
+
+    def _register_projector_hooks(self):
+        """注册投影层特征捕获钩子"""
+        # 第一层输入（原始视觉特征）
+        handle = self.projector[0].register_forward_pre_hook(
+            lambda module, input: self._capture_visual_feats(input[0])
+        )
+        self.hook_handles.append(handle)
+        
+        # 最后一层输出（投影后特征）
+        handle = self.projector[-1].register_forward_hook(
+            lambda module, input, output: self._capture_proj_feats(output)
+        )
+        self.hook_handles.append(handle)
+
+    def _capture_visual_feats(self, features):
+        """捕获原始视觉特征"""
+        self.visual_feats = features.detach().clone()
+
+    def _capture_proj_feats(self, features):
+        """捕获投影后特征"""
+        self.proj_feats = features.detach().clone()
+
+    def _get_text_features(self, text):
+        """获取目标文本特征"""
+        with torch.no_grad():
+            inputs = self.tokenizer(text, return_tensors="pt").to(self.device)
+            outputs = self.model.model.language_model(**inputs, output_hidden_states=True)
+            return outputs.hidden_states[-1][:, -1]  # 取最后层[CLS]特征
+
+    def _similarity_loss(self, proj_feats, text_feats):
+        """计算跨模态相似度损失"""
+        # 特征归一化
+        proj_feats = F.normalize(proj_feats, dim=-1)
+        text_feats = F.normalize(text_feats, dim=-1)
+        
+        # 对比损失计算
+        logits = proj_feats @ text_feats.T
+        return -logits.mean()  # 最大化相似度
+
+    def attack(self, image, target_text, iterations=100, lr=0.1, momentum=0.9):
+        """核心攻击方法"""
+        # 初始化对抗样本
+        adv_image = torch.tensor(image).permute(2,0,1).unsqueeze(0).to(self.device).float().requires_grad_(True)
+        optimizer = torch.optim.SGD([adv_image], lr=lr, momentum=momentum)
+        
+        # 预计算文本特征
+        text_feats = self._get_text_features(target_text)
+        
+        best_adv = None
+        min_loss = float('inf')
+        
+        for step in range(iterations):
+            # 清空特征缓存
+            self.visual_feats = None
+            self.proj_feats = None
+            
+            # 前向传播
+            self.model(adv_image)
+            
+            # 计算损失
+            loss = self._similarity_loss(self.proj_feats, text_feats)
+            
+            # 反向传播
+            optimizer.zero_grad()
+            loss.backward()
+            
+            # 梯度更新
+            optimizer.step()
+            
+            # 数值截断
+            adv_image.data = torch.clamp(adv_image, 0, 255)
+            
+            # 记录最佳样本
+            if loss < min_loss:
+                best_adv = adv_image.detach().clone()
+                min_loss = loss.item()
+
+        return best_adv.squeeze().permute(1,2,0).cpu().numpy().astype(np.uint8) 

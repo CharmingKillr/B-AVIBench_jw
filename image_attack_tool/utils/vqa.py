@@ -28,6 +28,10 @@ def evaluate_VQA(
     answer_dir = os.path.join(answer_path, time)
     os.makedirs(answer_dir, exist_ok=True)
     dataloader = DataLoader(dataset, batch_size=batch_size, collate_fn=lambda batch: {key: [dict[key] for dict in batch] for key in batch[0]})
+
+    # 新增梯度攻击结果存储
+    grad_attack_success = []
+    grad_attack_distances = []
     ###
     data_new=[]
     if model_name=="LLaVA15": 
@@ -89,12 +93,23 @@ def evaluate_VQA(
                 outputs = model.batch_grad_generate(batch['image_path'], batch['question'],method=method, level=level, gt_answer=batch['gt_answers'],task_name="vqa")
             else:
                 outputs = model.batch_generate(batch['image_path'], batch['question'],method=method, level=level,gt_answer=batch['gt_answers'],task_name="vqa")
-        index_attack=index_attack+outputs[1]
-        attack_success=attack_success+outputs[2]
-        attack_noise=attack_noise+outputs[0][0]
-        attack_patch=attack_patch+outputs[0][1]
-        attack_patch_boundary=attack_patch_boundary+outputs[0][2]
-        attack_patch_SurFree=attack_patch_SurFree+outputs[0][3]
+        
+        if grad_attacks:
+            # 提取梯度攻击的指标
+            grad_metrics = outputs['statistics']
+            grad_attack_success.extend([int(r['success']) for r in outputs['details']])
+            grad_attack_distances.extend([r['distance'] for r in outputs['details']])
+            
+            # 填充原数据结构（保持结构兼容）
+            index_attack.extend([1]*len(batch['image_path']))  # 梯度攻击默认全部尝试攻击
+            attack_success.extend([int(r['success']) for r in outputs['details']])
+        else:
+            index_attack=index_attack+outputs[1]
+            attack_success=attack_success+outputs[2]
+            attack_noise=attack_noise+outputs[0][0]
+            attack_patch=attack_patch+outputs[0][1]
+            attack_patch_boundary=attack_patch_boundary+outputs[0][2]
+            attack_patch_SurFree=attack_patch_SurFree+outputs[0][3]
         ###
         if model_name=="LLaVA15" or model_name=="OFv2" or model_name=="internlm-xcomposer" or model_name=="Qwen":             
             for k in range(len(outputs[2])):
@@ -107,24 +122,38 @@ def evaluate_VQA(
             with open(f"{new_dataset_path}/dataset.pkl", 'wb') as f:
                 pickle.dump(data_new, f)
         
-    if sum(index_attack)!=0 and sum(attack_success)!=0:
+    if grad_attacks:
+        total_attack = len(grad_attack_success)
+        success_count = sum(grad_attack_success)
         metrics = {
-        'success_rate': sum(attack_success)/sum(index_attack),
-        "attack_num": sum(index_attack),
-        "attack_noise":sum(attack_noise)/sum(attack_success),
-        "attack_patch":sum(attack_patch)/sum(attack_success),
-        "attack_patch_boundary":sum(attack_patch_boundary)/sum(attack_success),
-        "attack_patch_SurFree":sum(attack_patch_SurFree)/sum(attack_success),
-    }
+            'success_rate': success_count / total_attack if total_attack > 0 else 0,
+            'attack_num': total_attack,
+            'avg_distance': sum(grad_attack_distances)/len(grad_attack_distances) if grad_attack_distances else 0,
+            # 以下字段保持兼容
+            'attack_noise': -100,
+            'attack_patch': -100,
+            'attack_patch_boundary': -100,
+            'attack_patch_SurFree': -100
+        }
     else:
-        metrics = {
-        'success_rate': -100,
-        "attack_num": sum(index_attack),
-        "attack_success": sum(attack_success),
-        "attack_noise":-100,
-        "attack_patch":-100,
-        "attack_patch_boundary":-100,
-        "attack_patch_SurFree":-100,
-    }
+        if sum(index_attack)!=0 and sum(attack_success)!=0:
+            metrics = {
+            'success_rate': sum(attack_success)/sum(index_attack),
+            "attack_num": sum(index_attack),
+            "attack_noise":sum(attack_noise)/sum(attack_success),
+            "attack_patch":sum(attack_patch)/sum(attack_success),
+            "attack_patch_boundary":sum(attack_patch_boundary)/sum(attack_success),
+            "attack_patch_SurFree":sum(attack_patch_SurFree)/sum(attack_success),
+        }
+        else:
+            metrics = {
+            'success_rate': -100,
+            "attack_num": sum(index_attack),
+            "attack_success": sum(attack_success),
+            "attack_noise":-100,
+            "attack_patch":-100,
+            "attack_patch_boundary":-100,
+            "attack_patch_SurFree":-100,
+        }
     return metrics
     
