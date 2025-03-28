@@ -16,14 +16,13 @@ from models import get_model
 from utils import dataset_task_dict
 from tiny_datasets import dataset_class_dict, GeneralDataset
 
-
 def parse_args():
     parser = argparse.ArgumentParser(description="Demo")
 
     # models
     parser.add_argument("--model_name", type=str, default="BLIP2")
     parser.add_argument("--device", type=int, default=0)
-    parser.add_argument("--batch_size", type=int, default=1)
+    parser.add_argument("--batch_size", type=int, default=8)
 
     # datasets
     parser.add_argument("--dataset_name", type=str, default=None)
@@ -68,8 +67,8 @@ def main(args):
         # dataset = sample_dataset(dataset, args.sample_num, args.sample_seed)
         dataset = GeneralDataset(dataset_name)
         # for method_name in method:     
-        
-        metrics = eval_function(model, dataset, args.model_name, dataset_name, task_type, time, args.batch_size, answer_path=answer_path, method=None, level=0)
+
+        metrics = eval_function(model, dataset, args.model_name, dataset_name, task_type, time, args.batch_size, answer_path=answer_path, method=None, level=0, grad_attacks=False)
         print("***---",metrics)
         result["{}_severity_{}".format(dataset_name,0)] = metrics
                 # result[dataset_name] = metrics

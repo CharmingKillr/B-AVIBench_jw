@@ -84,6 +84,12 @@ def get_model(model_name, device=None):
     elif 'OFv2' in model_name:
         version = '4BI'
         from .test_OFv2 import OFv2
-        return OFv2(version, device)    
+        return OFv2(version, device)
+    elif 'Qwen25' in model_name:
+        from .test_qwen25 import TestQwen25
+        return TestQwen25(device)
+    elif 'glm4v' in model_name:
+        from .test_glm4v import Testglm4v
+        return Testglm4v(device)    
     else:
         raise ValueError(f"Invalid model_name: {model_name}")

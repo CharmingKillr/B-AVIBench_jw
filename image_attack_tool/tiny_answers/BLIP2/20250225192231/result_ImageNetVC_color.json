@@ -1,0 +1,10 @@
+{
+    "ImageNetVC_color_severity_0": {
+        "success_rate": 0.32558139534883723,
+        "attack_num": 43,
+        "attack_noise": 80.25079970365178,
+        "attack_patch": 37.74123099448838,
+        "attack_patch_boundary": 24.493658103397955,
+        "attack_patch_SurFree": 8.287783297482475
+    }
+}

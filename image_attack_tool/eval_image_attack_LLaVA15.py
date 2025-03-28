@@ -57,7 +57,7 @@ def main(args):
     torch_npu.npu.set_device(args.device)
     model = get_model(args.model_name, device=torch.device('npu'))
     # print(model)
-    time = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+    time = datetime.datetime.now().strftime("%Y_%m%d_%H_%M_%S")
     answer_path = f"{args.answer_path}/{args.model_name}"
 
     result = {}
@@ -82,7 +82,7 @@ def main(args):
 
 if __name__ == "__main__":
     args = parse_args()
-    args.dataset_names = ['ImageNetVC_color','ImageNetVC_component','ImageNetVC_material','ImageNetVC_others','ImageNetVC_shape','MSCOCO_MCI','VCR1_MCI','MSCOCO_OC','VCR1_OC','FUNSD','POIE','SROIE',
+    args.dataset_names = ['ImageNetVC_component','ImageNetVC_material','ImageNetVC_others','ImageNetVC_shape','MSCOCO_MCI','VCR1_MCI','MSCOCO_OC','VCR1_OC','FUNSD','POIE','SROIE',
                          'COCO-Text','CTW','CUTE80','HOST','IC13','IC15','IIIT5K','SVTP','SVT','NoCaps','Flickr','MSCOCO_caption_karpathy','WHOOPSCaption','AOKVQAClose','AOKVQAOpen','DocVQA','GQA',
                          'OCRVQA','OKVQA','STVQA','TextVQA','WHOOPSVQA','WHOOPSWeird','Visdial','IconQA','VSR','ScienceQAIMG','VizWiz','MSCOCO_pope_random','MSCOCO_pope_adversarial','MSCOCO_pope_popular']
     main(args)

@@ -2,9 +2,9 @@ import os
 import json
 import argparse
 import datetime
-from wand.image import Image as WandImage
-from wand.api import library as wandlibrary
-import wand.color as WandColor
+#from wand.image import Image as WandImage
+#from wand.api import library as wandlibrary
+#import wand.color as WandColor
 import torch
 
 import torch_npu
@@ -15,8 +15,8 @@ import random
 from models import get_model
 from utils import dataset_task_dict
 from tiny_datasets import dataset_class_dict, GeneralDataset
-import socket
-import deepspeed
+#import socket
+#import deepspeed
 
 method = ['Fog','Zoom_Blur','Glass_Blur','Gaussian_Noise','Shot_Noise','Impulse_Noise','Defocus_Blur','Motion_Blur','Snow',
 'Frost','Brightness','Contrast','Elastic','Pixelate','JPEG','Speckle_Noise','Gaussian_Blur','Spatter','Saturate'] 
@@ -38,7 +38,7 @@ def parse_args():
 
     # models
     parser.add_argument("--model_name", type=str, default="LLaVA15")
-    parser.add_argument("--device", type=int, default=4)
+    parser.add_argument("--device", type=int, default=1)
     parser.add_argument("--batch_size", type=int, default=1)
 
     # datasets

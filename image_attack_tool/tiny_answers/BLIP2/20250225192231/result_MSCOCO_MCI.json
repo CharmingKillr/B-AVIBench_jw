@@ -1,0 +1,50 @@
+{
+    "ImageNetVC_color_severity_0": {
+        "success_rate": 0.32558139534883723,
+        "attack_num": 43,
+        "attack_noise": 80.25079970365178,
+        "attack_patch": 37.74123099448838,
+        "attack_patch_boundary": 24.493658103397955,
+        "attack_patch_SurFree": 8.287783297482475
+    },
+    "ImageNetVC_component_severity_0": {
+        "success_rate": 0.15789473684210525,
+        "attack_num": 19,
+        "attack_noise": 79.4036808176706,
+        "attack_patch": 63.5490165472522,
+        "attack_patch_boundary": 0.49194888912299195,
+        "attack_patch_SurFree": 0.5075404179951192
+    },
+    "ImageNetVC_material_severity_0": {
+        "success_rate": 0.20930232558139536,
+        "attack_num": 43,
+        "attack_noise": 35.62114491582346,
+        "attack_patch": 12.921847446014823,
+        "attack_patch_boundary": 12.758325718396215,
+        "attack_patch_SurFree": 9.857130731488365
+    },
+    "ImageNetVC_others_severity_0": {
+        "success_rate": 0.2222222222222222,
+        "attack_num": 27,
+        "attack_noise": 58.68792630752569,
+        "attack_patch": 26.780401051062025,
+        "attack_patch_boundary": 21.29100264225193,
+        "attack_patch_SurFree": 14.421031729100527
+    },
+    "ImageNetVC_shape_severity_0": {
+        "success_rate": 0.04081632653061224,
+        "attack_num": 49,
+        "attack_noise": 90.91053588161985,
+        "attack_patch": 79.51874322902782,
+        "attack_patch_boundary": 2.713757038226317,
+        "attack_patch_SurFree": 0.1762884193511273
+    },
+    "MSCOCO_MCI_severity_0": {
+        "success_rate": 0.84,
+        "attack_num": 25,
+        "attack_noise": 118.49186601611176,
+        "attack_patch": 51.559871861838495,
+        "attack_patch_boundary": 21.68513087985982,
+        "attack_patch_SurFree": 8.500320452128626
+    }
+}

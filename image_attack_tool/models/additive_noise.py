@@ -29,7 +29,7 @@ class AdditiveGaussianNoiseAttack():
     the standard deviation until the input is misclassified.
 
     """
-    def __init__(self, model,task, distance=MSE, threshold=None): 
+    def __init__(self, model,task, distance=MSE, threshold=None): # model is the do_generate
         self._default_model = model
         self._default_task = task
         self._default_distance = distance
@@ -46,7 +46,7 @@ class AdditiveGaussianNoiseAttack():
                     " not an Adversarial instance"
                 )
             else:
-                model = self._default_model
+                model = self._default_model       # model is the do_generate
                 distance = self._default_distance
                 threshold = self._default_threshold
                 a = Adversarial(
